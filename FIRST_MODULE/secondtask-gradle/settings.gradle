@@ -1,0 +1,4 @@
+rootProject.name = 'secondtask-gradle'
+include 'core'
+include 'api'
+
