@@ -1,10 +1,9 @@
 package com.epam.esc.controllers;
 
 import com.epam.esc.DTO.GiftDTO;
-import com.epam.esc.dao.GiftDAO;
+import com.epam.esc.dao.GiftDAOImp;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.exception.Response;
-import com.epam.esc.model.Employee;
 import com.epam.esc.model.Gift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,11 +14,11 @@ import java.util.List;
 @RestController
 public class GiftController {
 
-    private GiftDAO giftDAO;
+    private GiftDAOImp giftDAOImp;
 
     @Autowired
-    public GiftController(GiftDAO giftDAO) {
-        this.giftDAO = giftDAO;
+    public GiftController(GiftDAOImp giftDAOImp) {
+        this.giftDAOImp = giftDAOImp;
     }
 
     @RequestMapping(value = "/gifts", //
@@ -27,15 +26,48 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<GiftDTO> getEmployees() {
-        return giftDAO.getAllGifts();
+        return giftDAOImp.getAllGifts();
 
     }
+
+
+//    @RequestMapping(value = "/gifts/sort", //
+//            method = RequestMethod.GET, //
+//            produces = { MediaType.APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//    public List<GiftDTO> getEmployeeSortByPrice(@RequestParam(name="sortingmethod")String sortingMethod) {
+//
+//        return giftDAOImp.getAllGiftsSortByName(sortingMethod);
+//
+//    }
+
+    @RequestMapping(value = "/gifts/sort", //
+            method = RequestMethod.GET, //
+            produces = { MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<GiftDTO> getEmployeeSortByPrice(@RequestParam(name="sortingmethod")String sortingMethod,
+                                                @RequestParam(name = "orderby",defaultValue = "name")String orderby) {
+
+        List<GiftDTO> list=null;
+        if(orderby.equalsIgnoreCase("name")){
+            list=giftDAOImp.getAllGiftsSortByName(sortingMethod);
+        }
+        if(orderby.equalsIgnoreCase("date")){
+            list=giftDAOImp.getAllGiftsSortByDate(sortingMethod);
+        }
+        return list;
+
+
+    }
+
+
+
     @RequestMapping(value = "/gifts/{id}", //
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public GiftDTO getEmployee(@PathVariable("id")int id) {
-        return giftDAO.getGiftById(id);
+        return giftDAOImp.getGiftById(id);
     }
 
 
@@ -44,9 +76,37 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
     public Gift addEmployee(@RequestBody Gift gift) {
-        return giftDAO.addGift(gift);
+        return giftDAOImp.addGift(gift);
 
     }
+
+
+    @RequestMapping(value = "/gift/{id}", //
+            method = RequestMethod.PUT, //
+            produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    public Gift updateGift(@RequestBody Gift gift,@PathVariable("id") int id) {
+        return giftDAOImp.updateGift(id,gift);
+
+    }
+
+
+    @RequestMapping(value = "/gift/{id}", //
+            method = RequestMethod.DELETE, //
+            produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    public boolean deleteGift(@PathVariable("id") int id) {
+        return giftDAOImp.deleteGift(id);
+
+    }
+
+
+
+
+
+
+
+
 
 
 
