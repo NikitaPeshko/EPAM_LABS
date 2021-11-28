@@ -1,5 +1,6 @@
 package com.epam.esc.config;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -55,20 +56,22 @@ public class SpringConfig implements WebMvcConfigurer {
 //        registry.viewResolver(resolver);
 //    }
     @Bean
-    public DataSource dataSource(){
-        DriverManagerDataSource dataSource=new DriverManagerDataSource();
+    public BasicDataSource DBCPDataSource(){
+        BasicDataSource dataSource=new BasicDataSource();
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/giftdb");
         dataSource.setUsername("root");
         dataSource.setPassword("root");
-
+        dataSource.setMaxIdle(10);
+        dataSource.setMinIdle(5);
+        dataSource.setMaxOpenPreparedStatements(100);
 
         return dataSource;
     }
 
     @Bean
     public JdbcTemplate jdbcTemplate(){
-        return new JdbcTemplate(dataSource());
+        return new JdbcTemplate(DBCPDataSource());
     }
 }
