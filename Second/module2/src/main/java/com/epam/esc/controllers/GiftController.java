@@ -66,7 +66,7 @@ public class GiftController {
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public GiftDTO getEmployee(@PathVariable("id")int id) {
+    public GiftDTO getGift(@PathVariable("id")int id) {
         return giftDAOImp.getGiftById(id);
     }
 
@@ -75,7 +75,7 @@ public class GiftController {
             method = RequestMethod.POST, //
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
-    public Gift addEmployee(@RequestBody Gift gift) {
+    public Gift addGift(@RequestBody Gift gift) {
         return giftDAOImp.addGift(gift);
 
     }
@@ -91,7 +91,7 @@ public class GiftController {
     }
 
 
-    @RequestMapping(value = "/gift/{id}", //
+    @RequestMapping(value = "/gifts/{id}", //
             method = RequestMethod.DELETE, //
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
