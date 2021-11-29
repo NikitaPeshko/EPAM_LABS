@@ -1,6 +1,7 @@
 package com.epam.esc.controllers;
 
 import com.epam.esc.DTO.GiftDTO;
+import com.epam.esc.DTO.GiftDTOWithTag;
 import com.epam.esc.dao.GiftDAOImp;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.exception.Response;
@@ -32,6 +33,16 @@ public class GiftController {
     }
 
 
+    @RequestMapping(value = "/giftwithtag/{id}", //
+            method = RequestMethod.GET, //
+            produces = { MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<GiftDTOWithTag> getGiftWithTag(@PathVariable("id")int id) {
+        return giftDAOImp.getGiftWithTag(id);
+
+    }
+
+
 
 
     @RequestMapping(value = "/gifts/find", //
@@ -42,9 +53,9 @@ public class GiftController {
                                        @RequestParam(name="discription",defaultValue = "")String discription) {
 
         return giftDAOImp.getAllGiftsByPart(name,discription);
-
-
     }
+
+
 
 
 //    @RequestMapping(value = "/gifts/sort", //

@@ -2,6 +2,7 @@ package com.epam.esc.dao;
 
 
 import com.epam.esc.DTO.GiftDTO;
+import com.epam.esc.DTO.GiftDTOWithTag;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.model.Employee;
 import com.epam.esc.model.Gift;
@@ -29,6 +30,15 @@ public class GiftDAOImp implements GiftDAO{
 
     public List<GiftDTO> getAllGifts() {
         return jdbcTemplate.query("SELECT *FROM gift_certificate",new GiftDTOMapper());
+    }
+
+
+    public List<GiftDTOWithTag> getGiftWithTag(int id) {
+        return jdbcTemplate.query("SELECT gift_certificate.idgift_certificate, gift_certificate.gift_name, GROUP_CONCAT(tag.tag_name) as ganre FROM gift_certificate\n" +
+                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
+                "left join tag on gift_tag.idtag=tag.idtag\n" +
+                "group by gift_certificate.idgift_certificate\n" +
+                "having idgift_certificate=?",new Object[]{id},new GiftDAOWithTagMapper());
     }
 
     public List<GiftDTO> getAllGiftsByPart(String partOfName,String discription) {

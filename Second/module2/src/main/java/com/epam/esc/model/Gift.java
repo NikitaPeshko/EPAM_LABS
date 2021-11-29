@@ -3,6 +3,7 @@ package com.epam.esc.model;
 
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
 public class Gift {
     private int id;
@@ -12,8 +13,10 @@ public class Gift {
     private int duration;
     private Timestamp createDate;
     private Timestamp lastUpdateDate;
+    private Set<Tag> listOfTag;
 
-    public Gift(int id, String name, String discription, int price, int duration, Timestamp createDate, Timestamp lastUpdateDate) {
+
+    public Gift(int id, String name, String discription, int price, int duration, Timestamp createDate, Timestamp lastUpdateDate, Set<Tag> listOfTag) {
         this.id = id;
         this.name = name;
         this.discription = discription;
@@ -21,12 +24,19 @@ public class Gift {
         this.duration = duration;
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
+        this.listOfTag = listOfTag;
     }
 
     public Gift() {
     }
 
+    public Set<Tag> getListOfTag() {
+        return listOfTag;
+    }
 
+    public void setListOfTag(Set<Tag> listOfTag) {
+        this.listOfTag = listOfTag;
+    }
 
     public int getId() {
         return id;
