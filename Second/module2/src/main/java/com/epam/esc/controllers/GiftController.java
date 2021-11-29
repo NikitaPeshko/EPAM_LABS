@@ -4,6 +4,7 @@ import com.epam.esc.DTO.GiftDTO;
 import com.epam.esc.dao.GiftDAOImp;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.exception.Response;
+import com.epam.esc.exception.ServiceException;
 import com.epam.esc.model.Gift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,6 +28,21 @@ public class GiftController {
     @ResponseBody
     public List<GiftDTO> getEmployees() {
         return giftDAOImp.getAllGifts();
+
+    }
+
+
+
+
+    @RequestMapping(value = "/gifts/find", //
+            method = RequestMethod.GET, //
+            produces = { MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<GiftDTO> getGiftByName(@RequestParam(name="name",defaultValue = "")String name,
+                                       @RequestParam(name="discription",defaultValue = "")String discription) {
+
+        return giftDAOImp.getAllGiftsByPart(name,discription);
+
 
     }
 
@@ -114,4 +130,16 @@ public class GiftController {
     public Response handleException(DaoException e) {
         return new Response(e.getMessage());
     }
+
+//    @GetMapping(value = "/testDefaultControllerAdvice", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    public Response testDefaultControllerAdvice(@RequestParam(required = false, defaultValue = "false") boolean exception)
+//            throws ServiceException {
+//        if (exception) {
+//            throw new ServiceException("BusinessException in testDefaultControllerAdvice");
+//        }
+//        return new Response("OK");
+//    }
+
+
+
 }

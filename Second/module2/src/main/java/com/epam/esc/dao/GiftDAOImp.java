@@ -31,6 +31,22 @@ public class GiftDAOImp implements GiftDAO{
         return jdbcTemplate.query("SELECT *FROM gift_certificate",new GiftDTOMapper());
     }
 
+    public List<GiftDTO> getAllGiftsByPart(String partOfName,String discription) {
+        List<GiftDTO> list = null;
+        if (partOfName.isEmpty() && discription.isEmpty()) {
+            list = jdbcTemplate.query("SELECT *FROM gift_certificate", new GiftDTOMapper());
+        }
+        if (!partOfName.isEmpty()) {
+            list = jdbcTemplate.query("SELECT *FROM gift_certificate where gift_name like ?", new String[]{"%" + partOfName + "%"}, new GiftDTOMapper());
+        }
+        if (!discription.isEmpty()) {
+            list = jdbcTemplate.query("SELECT *FROM gift_certificate where discription like ?", new String[]{"%" + discription + "%"}, new GiftDTOMapper());
+        }
+        return list;
+    }
+
+
+
     public List<GiftDTO> getAllGiftsSortByName(String sortingMethod) {
         List<GiftDTO> list = null;
         if(sortingMethod.equalsIgnoreCase("asc")){
