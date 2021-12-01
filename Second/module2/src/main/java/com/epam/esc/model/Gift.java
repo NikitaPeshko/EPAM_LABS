@@ -13,10 +13,10 @@ public class Gift {
     private int duration;
     private Timestamp createDate;
     private Timestamp lastUpdateDate;
-    private Set<Tag> listOfTag;
+    private Set<String> listOfTag;
 
 
-    public Gift(int id, String name, String discription, int price, int duration, Timestamp createDate, Timestamp lastUpdateDate, Set<Tag> listOfTag) {
+    public Gift(int id, String name, String discription, int price, int duration, Timestamp createDate, Timestamp lastUpdateDate, Set<String> listOfTag) {
         this.id = id;
         this.name = name;
         this.discription = discription;
@@ -30,11 +30,11 @@ public class Gift {
     public Gift() {
     }
 
-    public Set<Tag> getListOfTag() {
+    public Set<String> getListOfTag() {
         return listOfTag;
     }
 
-    public void setListOfTag(Set<Tag> listOfTag) {
+    public void setListOfTag(Set<String> listOfTag) {
         this.listOfTag = listOfTag;
     }
 

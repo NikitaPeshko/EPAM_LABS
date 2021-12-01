@@ -8,6 +8,7 @@ import com.epam.esc.exception.NoEntityException;
 import com.epam.esc.exception.Response;
 import com.epam.esc.exception.ServiceException;
 import com.epam.esc.model.Gift;
+import com.epam.esc.model.TempGift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -120,6 +121,16 @@ public class GiftController {
     @ResponseBody
     public Gift addGift(@RequestBody Gift gift) {
         return giftDAOImp.addGift(gift);
+
+    }
+
+
+    @RequestMapping(value = "/giftaddtemp", //
+            method = RequestMethod.POST, //
+            produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    public TempGift addGifttemp(@RequestBody TempGift gift) {
+        return giftDAOImp.addGifttemp(gift);
 
     }
 

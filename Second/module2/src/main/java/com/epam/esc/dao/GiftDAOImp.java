@@ -2,20 +2,19 @@ package com.epam.esc.dao;
 
 
 import com.epam.esc.DTO.GiftDTO;
-import com.epam.esc.DTO.GiftDTOWithTag;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.exception.NoEntityException;
 import com.epam.esc.exception.ServiceException;
-import com.epam.esc.model.Employee;
 import com.epam.esc.model.Gift;
+import com.epam.esc.model.TempGift;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class GiftDAOImp implements GiftDAO{
@@ -169,6 +168,34 @@ public class GiftDAOImp implements GiftDAO{
                         "            VALUES(?, ?, ?, ?, ?, ?)",
                         gift.getName(),gift.getDiscription(),gift.getPrice(),gift.getDuration(),
                 gift.getCreateDate(),gift.getLastUpdateDate());
+        return gift;
+    }
+
+    public TempGift addGifttemp(TempGift gift) {
+        jdbcTemplate.update("INSERT INTO gift_certificate (gift_name, discription, price, duration, create_date, last_update_date)\n" +
+                        "            VALUES(?, ?, ?, ?, ?, ?)",
+                gift.getName(),gift.getDiscription(),gift.getPrice(),gift.getDuration(),
+                gift.getCreateDate(),gift.getLastUpdateDate());
+
+                String[] tags=gift.getTags().split(",");
+                Set<String> tagsSet=new HashSet<>(Arrays.asList(tags));
+                GiftDTO giftDTO=new GiftDTO();
+                giftDTO.setTags(tagsSet);
+
+            //    System.out.println(giftDTO);
+                int coutIterarions=giftDTO.getTags().size();
+        List<Gift> giftFromDb=jdbcTemplate.query("select * from gift_certificate\n" +
+                "where gift_name=?",new String[]{gift.getName()},new GiftMapper());
+        int id=giftFromDb.get(0).getId();
+        System.out.println(id);
+
+        for (int i=0;i<coutIterarions;i++){
+            jdbcTemplate.update("INSERT INTO gift_tag (idgift, idtag)\n" +
+                            "            VALUES(?, (select tag.idtag from tag where tag.tag_name=?))",
+                    id,tags[i]);
+
+        }
+    //    jdbcTemplate.update()
         return gift;
     }
 

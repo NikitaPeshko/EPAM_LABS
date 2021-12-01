@@ -94,7 +94,6 @@ public class GiftDTO {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-
     @Override
     public String toString() {
         return "GiftDTO{" +
@@ -103,8 +102,9 @@ public class GiftDTO {
                 ", discription='" + discription + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +
-                ", createDate=" + createDate +
-                ", lastUpdateDate=" + lastUpdateDate +
+                ", createDate='" + createDate + '\'' +
+                ", lastUpdateDate='" + lastUpdateDate + '\'' +
+                ", tags=" + tags +
                 '}';
     }
 }
