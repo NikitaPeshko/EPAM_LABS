@@ -1,17 +1,18 @@
 package com.epam.esc.DTO;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class GiftDTOWithTag {
     private int id;
     private String giftName;
-    private String tags;
+    private Set<String> tags;
 
     public GiftDTOWithTag() {
 
     }
 
-    public GiftDTOWithTag(int id, String giftName, String tags) {
+    public GiftDTOWithTag(int id, String giftName, Set<String> tags) {
         this.id = id;
         this.giftName = giftName;
         this.tags = tags;
@@ -33,11 +34,11 @@ public class GiftDTOWithTag {
         this.giftName = giftName;
     }
 
-    public String getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 

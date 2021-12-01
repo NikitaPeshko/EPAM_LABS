@@ -68,6 +68,29 @@ public class GiftDAOImp implements GiftDAO{
         return list;
     }
 
+
+    public List<GiftDTO> getGiftsByTag(String tag) {
+
+        String sql="select gift_certificate.*, group_concat(t1.tag_name)as tags\n" +
+                " from gift_certificate\n" +
+                "join gift_tag ft1\n" +
+                " on ft1.idgift = gift_certificate.idgift_certificate\n" +
+                "join tag t1\n" +
+                " on t1.idtag = ft1.idtag\n" +
+                "join gift_tag ft2\n" +
+                " on ft2.idgift = gift_certificate.idgift_certificate\n" +
+                "join tag t2\n" +
+                " on t2.idtag = ft2.idtag and t2.tag_name = ? \n" +
+                "group by gift_certificate.idgift_certificate";
+        List<GiftDTO>list=null;
+
+        list= jdbcTemplate.query(sql,new String[]{tag},new GiftDTOMapper());
+        return list;
+
+
+
+    }
+
     @Override
     public List<GiftDTO> getAllGiftsSortByDate(String sortingMethod) {
         List<GiftDTO> list = null;

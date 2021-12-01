@@ -4,6 +4,7 @@ import com.epam.esc.model.Gift;
 
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
 public class GiftDTO {
     private int id;
@@ -13,8 +14,9 @@ public class GiftDTO {
     private int duration;
     private String createDate;
     private String lastUpdateDate;
+    private Set<String> tags;
 
-    public GiftDTO(int id, String name, String discription, int price, int duration, String createDate, String lastUpdateDate) {
+    public GiftDTO(int id, String name, String discription, int price, int duration, String createDate, String lastUpdateDate, Set<String> tags) {
         this.id = id;
         this.name = name;
         this.discription = discription;
@@ -22,12 +24,19 @@ public class GiftDTO {
         this.duration = duration;
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
+        this.tags = tags;
     }
 
     public GiftDTO() {
     }
 
+    public Set<String> getTags() {
+        return tags;
+    }
 
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
 
     public int getId() {
         return id;

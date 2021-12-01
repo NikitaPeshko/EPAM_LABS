@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TimeZone;
 
 
@@ -35,6 +38,11 @@ public class GiftDTOMapper implements RowMapper<GiftDTO> {
         Timestamp last_update_date=resultSet.getTimestamp("last_update_date");
         String nowAsISOlast_update_date = df.format(last_update_date);
         gift.setLastUpdateDate(nowAsISOlast_update_date);
+
+        String tags=resultSet.getString(("tags"));
+        String[] tags1=tags.split(",");
+        Set<String> tagsSet=new HashSet<>(Arrays.asList(tags1));
+        gift.setTags(tagsSet);
 
 
   //      gift.setLastUpdateDate(resultSet.getTimestamp("last_update_date"));

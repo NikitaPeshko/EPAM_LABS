@@ -56,6 +56,16 @@ public class GiftController {
     }
 
 
+    @RequestMapping(value = "/gifts/findbytag", //
+            method = RequestMethod.GET, //
+            produces = { MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<GiftDTO> getGiftByName(@RequestParam(name="tag",defaultValue = "")String tag) {
+
+        return giftDAOImp.getGiftsByTag(tag);
+    }
+
+
 
 
 //    @RequestMapping(value = "/gifts/sort", //
