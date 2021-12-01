@@ -51,7 +51,7 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<GiftDTO> getGiftByName(@RequestParam(name="name",defaultValue = "")String name,
-                                       @RequestParam(name="discription",defaultValue = "")String discription) throws NoEntityException {
+                                       @RequestParam(name="discription",defaultValue = "")String discription) throws NoEntityException, ServiceException {
 
 
             return giftDAOImp.getAllGiftsByPart(name,discription);
@@ -152,11 +152,11 @@ public class GiftController {
 
 
 
-
-    @ExceptionHandler(DaoException.class)
-    public Response handleException(DaoException e) {
-        return new Response(e.getMessage());
-    }
+//
+//    @ExceptionHandler(DaoException.class)
+//    public Response handleException(DaoException e) {
+//        return new Response(e.getMessage(),e.);
+//    }
 
 //    @GetMapping(value = "/testDefaultControllerAdvice", produces = {MediaType.APPLICATION_JSON_VALUE})
 //    public Response testDefaultControllerAdvice(@RequestParam(required = false, defaultValue = "false") boolean exception)
@@ -166,9 +166,9 @@ public class GiftController {
 //        }
 //        return new Response("OK");
 //    }
-@ExceptionHandler(NoEntityException.class)
-public Response handleException(NoEntityException e) {
-    return new Response(e.getMessage());
+@ExceptionHandler({ServiceException.class})
+public Response handleException(ServiceException e) {
+    return new Response(e.getMessage(), e.getErrorcode());
 }
 
 

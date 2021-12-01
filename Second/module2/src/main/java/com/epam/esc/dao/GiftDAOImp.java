@@ -5,6 +5,7 @@ import com.epam.esc.DTO.GiftDTO;
 import com.epam.esc.DTO.GiftDTOWithTag;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.exception.NoEntityException;
+import com.epam.esc.exception.ServiceException;
 import com.epam.esc.model.Employee;
 import com.epam.esc.model.Gift;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class GiftDAOImp implements GiftDAO{
 //                .stream().findAny().orElseThrow(()->new DaoException("no user by this id"));
 //    }
 
-    public List<GiftDTO> getAllGiftsByPart(String partOfName,String discription) throws NoEntityException {
+    public List<GiftDTO> getAllGiftsByPart(String partOfName,String discription) throws NoEntityException, ServiceException {
         String sqlForName="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
                 "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
                 "left join tag on gift_tag.idtag=tag.idtag\n" +
@@ -70,7 +71,7 @@ public class GiftDAOImp implements GiftDAO{
             list = jdbcTemplate.query(sqlForDiscription, new String[]{"%" + discription + "%"}, new GiftDTOMapper());
         }
         if (list.isEmpty()){
-            throw new NoEntityException("No gifts");
+            throw new ServiceException("No gifts","404");
         }
         return list;
     }

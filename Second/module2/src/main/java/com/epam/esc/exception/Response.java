@@ -2,12 +2,15 @@ package com.epam.esc.exception;
 
 public class Response {
     private String message;
+    private String errCode;
+
 
     public Response() {
     }
 
-    public Response(String message) {
+    public Response(String message, String errCode) {
         this.message = message;
+        this.errCode = errCode;
     }
 
     public String getMessage() {
@@ -16,5 +19,13 @@ public class Response {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getErrCode() {
+        return errCode;
+    }
+
+    public void setErrCode(String errCode) {
+        this.errCode = errCode;
     }
 }
