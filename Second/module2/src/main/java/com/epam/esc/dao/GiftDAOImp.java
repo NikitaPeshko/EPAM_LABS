@@ -4,6 +4,7 @@ package com.epam.esc.dao;
 import com.epam.esc.DTO.GiftDTO;
 import com.epam.esc.DTO.GiftDTOWithTag;
 import com.epam.esc.exception.DaoException;
+import com.epam.esc.exception.NoEntityException;
 import com.epam.esc.model.Employee;
 import com.epam.esc.model.Gift;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,24 +38,39 @@ public class GiftDAOImp implements GiftDAO{
     }
 
 
-    public List<GiftDTOWithTag> getGiftWithTag(int id) {
-        return jdbcTemplate.query("SELECT gift_certificate.idgift_certificate, gift_certificate.gift_name, GROUP_CONCAT(tag.tag_name) as ganre FROM gift_certificate\n" +
+//    public List<GiftDTO> getGiftWithTag(int id) {
+//        return jdbcTemplate.query("SELECT gift_certificate.idgift_certificate, gift_certificate.gift_name, GROUP_CONCAT(tag.tag_name) as ganre FROM gift_certificate\n" +
+//                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
+//                "left join tag on gift_tag.idtag=tag.idtag\n" +
+//                "group by gift_certificate.idgift_certificate\n" +
+//                "having idgift_certificate=?",new Object[]{id},new GiftDTOMapper())
+//                .stream().findAny().orElseThrow(()->new DaoException("no user by this id"));
+//    }
+
+    public List<GiftDTO> getAllGiftsByPart(String partOfName,String discription) throws NoEntityException {
+        String sqlForName="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
                 "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
                 "left join tag on gift_tag.idtag=tag.idtag\n" +
                 "group by gift_certificate.idgift_certificate\n" +
-                "having idgift_certificate=?",new Object[]{id},new GiftDAOWithTagMapper());
-    }
+                "having gift_name like ?";
+        String sqlForDiscription="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
+                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
+                "left join tag on gift_tag.idtag=tag.idtag\n" +
+                "group by gift_certificate.idgift_certificate\n" +
+                "having discription like ?";
 
-    public List<GiftDTO> getAllGiftsByPart(String partOfName,String discription) {
         List<GiftDTO> list = null;
         if (partOfName.isEmpty() && discription.isEmpty()) {
-            list = jdbcTemplate.query("SELECT *FROM gift_certificate", new GiftDTOMapper());
+            list = getAllGifts();
         }
         if (!partOfName.isEmpty()) {
-            list = jdbcTemplate.query("SELECT *FROM gift_certificate where gift_name like ?", new String[]{"%" + partOfName + "%"}, new GiftDTOMapper());
+            list = jdbcTemplate.query(sqlForName, new String[]{"%" + partOfName + "%"}, new GiftDTOMapper());
         }
         if (!discription.isEmpty()) {
-            list = jdbcTemplate.query("SELECT *FROM gift_certificate where discription like ?", new String[]{"%" + discription + "%"}, new GiftDTOMapper());
+            list = jdbcTemplate.query(sqlForDiscription, new String[]{"%" + discription + "%"}, new GiftDTOMapper());
+        }
+        if (list.isEmpty()){
+            throw new NoEntityException("No gifts");
         }
         return list;
     }
@@ -62,12 +78,25 @@ public class GiftDAOImp implements GiftDAO{
 
 
     public List<GiftDTO> getAllGiftsSortByName(String sortingMethod) {
+        String sqlForAsc="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
+                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
+                "left join tag on gift_tag.idtag=tag.idtag\n" +
+                "group by gift_certificate.idgift_certificate\n" +
+                "order by gift_name asc";
+        String sqlForDesc="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
+                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
+                "left join tag on gift_tag.idtag=tag.idtag\n" +
+                "group by gift_certificate.idgift_certificate\n" +
+                "order by gift_name desc";
+
+
+
         List<GiftDTO> list = null;
         if(sortingMethod.equalsIgnoreCase("asc")){
-            list=jdbcTemplate.query("SELECT *FROM gift_certificate order by gift_name asc",new GiftDTOMapper());
+            list=jdbcTemplate.query(sqlForAsc,new GiftDTOMapper());
         }
         if(sortingMethod.equalsIgnoreCase("desc")){
-            list=jdbcTemplate.query("SELECT *FROM gift_certificate order by gift_name desc",new GiftDTOMapper());
+            list=jdbcTemplate.query(sqlForDesc,new GiftDTOMapper());
         }
         return list;
     }
@@ -97,21 +126,42 @@ public class GiftDAOImp implements GiftDAO{
 
     @Override
     public List<GiftDTO> getAllGiftsSortByDate(String sortingMethod) {
+        String sqlForAsc="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
+                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
+                "left join tag on gift_tag.idtag=tag.idtag\n" +
+                "group by gift_certificate.idgift_certificate\n" +
+                "order by create_date asc";
+        String sqlForDesc="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
+                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
+                "left join tag on gift_tag.idtag=tag.idtag\n" +
+                "group by gift_certificate.idgift_certificate\n" +
+                "order by create_date desc";
+
         List<GiftDTO> list = null;
         if(sortingMethod.equalsIgnoreCase("asc")){
-            list=jdbcTemplate.query("SELECT *FROM gift_certificate order by create_date asc",new GiftDTOMapper());
+            list=jdbcTemplate.query(sqlForAsc,new GiftDTOMapper());
         }
         if(sortingMethod.equalsIgnoreCase("desc")){
-            list=jdbcTemplate.query("SELECT *FROM gift_certificate order by create_date desc",new GiftDTOMapper());
+            list=jdbcTemplate.query(sqlForDesc,new GiftDTOMapper());
         }
         return list;
     }
 
 
     public GiftDTO getGiftById(int id) {
-        return jdbcTemplate.query("SELECT * FROM gift_certificate WHERE idgift_certificate=?", new Object[]{id}, new GiftDTOMapper())
+        String sql="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
+                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
+                "left join tag on gift_tag.idtag=tag.idtag\n" +
+                "group by gift_certificate.idgift_certificate\n" +
+                "having idgift_certificate=?";
+
+
+        return jdbcTemplate.query(sql, new Object[]{id}, new GiftDTOMapper())
                 .stream().findAny().orElseThrow(()->new DaoException("no user by this id"));
     }
+
+
+
 
     public Gift addGift(Gift gift) {
         jdbcTemplate.update("INSERT INTO gift_certificate (gift_name, discription, price, duration, create_date, last_update_date)\n" +
