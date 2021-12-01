@@ -29,7 +29,11 @@ public class GiftDAOImp implements GiftDAO{
 
 
     public List<GiftDTO> getAllGifts() {
-        return jdbcTemplate.query("SELECT *FROM gift_certificate",new GiftDTOMapper());
+        String sql="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
+                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
+                "left join tag on gift_tag.idtag=tag.idtag\n" +
+                "group by gift_certificate.idgift_certificate";
+        return jdbcTemplate.query(sql,new GiftDTOMapper());
     }
 
 
