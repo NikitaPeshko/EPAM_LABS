@@ -29,7 +29,7 @@ public class GiftController {
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<GiftDTO> getEmployees() {
+    public List<GiftDTO> getEmployees() throws NoEntityException {
         return giftDAOImp.getAllGifts();
 
     }
@@ -90,7 +90,7 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<GiftDTO> getEmployeeSortByPrice(@RequestParam(name="sortingmethod",defaultValue = "asc")String sortingMethod,
-                                                @RequestParam(name = "orderby",defaultValue = "name")String orderby) {
+                                                @RequestParam(name = "orderby",defaultValue = "name")String orderby) throws NoEntityException {
 
         List<GiftDTO> list=null;
         if(orderby.equalsIgnoreCase("name")){
@@ -110,7 +110,7 @@ public class GiftController {
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public GiftDTO getGift(@PathVariable("id")int id) {
+    public GiftDTO getGift(@PathVariable("id")int id) throws DaoException {
         return giftDAOImp.getGiftById(id);
     }
 
@@ -129,7 +129,7 @@ public class GiftController {
             method = RequestMethod.POST, //
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
-    public TempGift addGifttemp(@RequestBody TempGift gift) {
+    public TempGift addGifttemp(@RequestBody TempGift gift) throws NoEntityException {
         return giftDAOImp.addGifttemp(gift);
 
     }
@@ -149,18 +149,10 @@ public class GiftController {
             method = RequestMethod.DELETE, //
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
-    public boolean deleteGift(@PathVariable("id") int id) {
+    public boolean deleteGift(@PathVariable("id") int id) throws ServiceException {
         return giftDAOImp.deleteGift(id);
 
     }
-
-
-
-
-
-
-
-
 
 
 //
@@ -181,6 +173,11 @@ public class GiftController {
 public Response handleException(ServiceException e) {
     return new Response(e.getMessage(), e.getErrorcode());
 }
+
+    @ExceptionHandler({NoEntityException.class,})
+    public Response handleExceptionForNoEntityException(NoEntityException e) {
+        return new Response(e.getMessage(), e.getErrorcode());
+    }
 
 
 

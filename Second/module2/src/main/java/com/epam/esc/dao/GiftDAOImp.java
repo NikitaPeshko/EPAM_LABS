@@ -8,9 +8,11 @@ import com.epam.esc.exception.ServiceException;
 import com.epam.esc.model.Gift;
 import com.epam.esc.model.TempGift;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -29,12 +31,18 @@ public class GiftDAOImp implements GiftDAO{
     }
 
 
-    public List<GiftDTO> getAllGifts() {
+    public List<GiftDTO> getAllGifts() throws NoEntityException {
         String sql="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
                 "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
                 "left join tag on gift_tag.idtag=tag.idtag\n" +
                 "group by gift_certificate.idgift_certificate";
-        return jdbcTemplate.query(sql,new GiftDTOMapper());
+        List<GiftDTO>list=null;
+        list=jdbcTemplate.query(sql,new GiftDTOMapper());
+
+        if(list.isEmpty()){
+            throw new NoEntityException("No certificate found","500NOTFOUNT");
+        }
+        return list;
     }
 
 
@@ -125,7 +133,7 @@ public class GiftDAOImp implements GiftDAO{
     }
 
     @Override
-    public List<GiftDTO> getAllGiftsSortByDate(String sortingMethod) {
+    public List<GiftDTO> getAllGiftsSortByDate(String sortingMethod) throws NoEntityException {
         String sqlForAsc="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
                 "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
                 "left join tag on gift_tag.idtag=tag.idtag\n" +
@@ -144,11 +152,15 @@ public class GiftDAOImp implements GiftDAO{
         if(sortingMethod.equalsIgnoreCase("desc")){
             list=jdbcTemplate.query(sqlForDesc,new GiftDTOMapper());
         }
+        if(list.isEmpty()){
+            String errorcode=sortingMethod.toUpperCase()+sortingMethod.length()+sortingMethod.charAt(0);
+            throw new NoEntityException("No gifts certficate",errorcode);
+        }
         return list;
     }
 
 
-    public GiftDTO getGiftById(int id) {
+    public GiftDTO getGiftById(int id) throws DaoException {
         String sql="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
                 "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
                 "left join tag on gift_tag.idtag=tag.idtag\n" +
@@ -171,7 +183,11 @@ public class GiftDAOImp implements GiftDAO{
         return gift;
     }
 
-    public TempGift addGifttemp(TempGift gift) {
+    public TempGift addGifttemp(TempGift gift) throws NoEntityException {
+        if (gift.getName()==null||gift.getTags()==null||gift.getDiscription()==null||
+                gift.getCreateDate()==null||gift.getDuration()==0||gift.getLastUpdateDate()==null){
+            throw new NoEntityException("Not enough parametars","404NOTEN");
+        }
         jdbcTemplate.update("INSERT INTO gift_certificate (gift_name, discription, price, duration, create_date, last_update_date)\n" +
                         "            VALUES(?, ?, ?, ?, ?, ?)",
                 gift.getName(),gift.getDiscription(),gift.getPrice(),gift.getDuration(),
@@ -195,13 +211,27 @@ public class GiftDAOImp implements GiftDAO{
                     id,tags[i]);
 
         }
-    //    jdbcTemplate.update()
+        if(gift==null){
+            throw new NoEntityException("Certificate not created","404NOTCREATED");
+        }
         return gift;
     }
 
     @Override
-    public boolean deleteGift(int id) {
-        return jdbcTemplate.update("delete from gift_certificate where idgift_certificate=?",new Object[]{id})>0;
+    public boolean deleteGift(int id) throws ServiceException {
+        boolean result=true;
+        
+        jdbcTemplate.update("delete from gift_tag where idgift=?",new Object[]{id});
+
+        try{
+            result=jdbcTemplate.update("delete from gift_certificate where idgift_certificate=?",new Object[]{id})>0;
+        }catch(DataIntegrityViolationException e){
+            throw new ServiceException("Not delet gift","NOTDELETE"+id);
+        }
+
+
+        return result;
+
 
     }
 

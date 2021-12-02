@@ -2,6 +2,7 @@ package com.epam.esc.controllers;
 
 import com.epam.esc.DTO.GiftDTO;
 import com.epam.esc.dao.TagDAOImpl;
+import com.epam.esc.exception.DaoException;
 import com.epam.esc.model.Gift;
 import com.epam.esc.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class TagController {
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public Tag getTag(@PathVariable("id")int id) {
+    public Tag getTag(@PathVariable("id")int id) throws DaoException {
         return tagDAO.getTagById(id);
     }
 

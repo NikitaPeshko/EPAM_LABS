@@ -33,7 +33,7 @@ public class TagDAOImpl implements TagDAO{
     }
 
     @Override
-    public Tag getTagById(int id) {
+    public Tag getTagById(int id) throws DaoException {
         return jdbcTemplate.query("SELECT * FROM tag WHERE idtag=?", new Object[]{id}, new BeanPropertyRowMapper<>(Tag.class))
                 .stream().findAny().orElseThrow(()->new DaoException("no tag by this id"));
     }
