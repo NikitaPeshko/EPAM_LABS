@@ -1,14 +1,13 @@
 package com.epam.esc.controllers;
 
 import com.epam.esc.DTO.GiftDTO;
-import com.epam.esc.DTO.GiftDTOWithTag;
 import com.epam.esc.dao.GiftDAOImp;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.exception.NoEntityException;
 import com.epam.esc.exception.Response;
 import com.epam.esc.exception.ServiceException;
-import com.epam.esc.model.Gift;
-import com.epam.esc.model.TempGift;
+import com.epam.esc.entity.Gift;
+import com.epam.esc.entity.TempGift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

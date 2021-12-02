@@ -1,9 +1,5 @@
 package com.epam.esc.DTO;
 
-import com.epam.esc.model.Gift;
-
-import java.sql.Timestamp;
-import java.util.Objects;
 import java.util.Set;
 
 public class GiftDTO {

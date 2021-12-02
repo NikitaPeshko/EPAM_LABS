@@ -1,7 +1,7 @@
 package com.epam.esc.dao;
 
 import com.epam.esc.exception.DaoException;
-import com.epam.esc.model.Tag;
+import com.epam.esc.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

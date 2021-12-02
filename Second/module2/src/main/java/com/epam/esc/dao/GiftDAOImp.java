@@ -5,14 +5,13 @@ import com.epam.esc.DTO.GiftDTO;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.exception.NoEntityException;
 import com.epam.esc.exception.ServiceException;
-import com.epam.esc.model.Gift;
-import com.epam.esc.model.TempGift;
+import com.epam.esc.entity.Gift;
+import com.epam.esc.entity.TempGift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -220,7 +219,7 @@ public class GiftDAOImp implements GiftDAO{
     @Override
     public boolean deleteGift(int id) throws ServiceException {
         boolean result=true;
-        
+
         jdbcTemplate.update("delete from gift_tag where idgift=?",new Object[]{id});
 
         try{

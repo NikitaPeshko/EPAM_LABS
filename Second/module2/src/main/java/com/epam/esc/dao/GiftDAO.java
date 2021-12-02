@@ -1,10 +1,11 @@
 package com.epam.esc.dao;
 
 import com.epam.esc.DTO.GiftDTO;
+import com.epam.esc.entity.TempGift;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.exception.NoEntityException;
 import com.epam.esc.exception.ServiceException;
-import com.epam.esc.model.Gift;
+import com.epam.esc.entity.Gift;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface GiftDAO {
     Gift addGift(Gift gift);
     boolean deleteGift(int id) throws ServiceException;
     Gift updateGift(int id,Gift gift);
+    TempGift addGifttemp(TempGift gift) throws NoEntityException;
+
 
 
 }

@@ -1,15 +1,10 @@
 package com.epam.esc.dao;
 
-import com.epam.esc.model.Gift;
+import com.epam.esc.entity.Gift;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class GiftMapper implements RowMapper<Gift> {
     @Override

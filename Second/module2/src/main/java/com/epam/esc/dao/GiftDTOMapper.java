@@ -1,7 +1,6 @@
 package com.epam.esc.dao;
 
 import com.epam.esc.DTO.GiftDTO;
-import com.epam.esc.model.Gift;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
