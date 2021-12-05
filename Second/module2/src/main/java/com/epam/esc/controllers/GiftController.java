@@ -8,6 +8,7 @@ import com.epam.esc.exception.Response;
 import com.epam.esc.exception.ServiceException;
 import com.epam.esc.entity.Gift;
 import com.epam.esc.entity.TempGift;
+import com.epam.esc.servise.GiftServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,11 @@ import java.util.List;
 @RestController
 public class GiftController {
 
-    private GiftDAOImp giftDAOImp;
+    private GiftServiceImp giftServiceImp;
 
     @Autowired
-    public GiftController(GiftDAOImp giftDAOImp) {
-        this.giftDAOImp = giftDAOImp;
+    public GiftController(GiftServiceImp giftServiceImp) {
+        this.giftServiceImp = giftServiceImp;
     }
 
     @RequestMapping(value = "/gifts", //
@@ -29,21 +30,9 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<GiftDTO> getEmployees() throws NoEntityException {
-        return giftDAOImp.getAllGifts();
+        return giftServiceImp.getAllGifts();
 
     }
-
-
-//    @RequestMapping(value = "/giftwithtag/{id}", //
-//            method = RequestMethod.GET, //
-//            produces = { MediaType.APPLICATION_JSON_VALUE})
-//    @ResponseBody
-//    public List<GiftDTO> getGiftWithTag(@PathVariable("id")int id) {
-//        return giftDAOImp.getGiftWithTag(id);
-//
-//    }
-
-
 
 
     @RequestMapping(value = "/gifts/find", //
@@ -54,7 +43,7 @@ public class GiftController {
                                        @RequestParam(name="discription",defaultValue = "")String discription) throws NoEntityException, ServiceException {
 
 
-            return giftDAOImp.getAllGiftsByPart(name,discription);
+            return giftServiceImp.getAllGiftsByPart(name,discription);
 
 
 
@@ -68,21 +57,9 @@ public class GiftController {
     @ResponseBody
     public List<GiftDTO> getGiftByName(@RequestParam(name="tag",defaultValue = "")String tag) {
 
-        return giftDAOImp.getGiftsByTag(tag);
+        return giftServiceImp.getGiftsByTag(tag);
     }
 
-
-
-
-//    @RequestMapping(value = "/gifts/sort", //
-//            method = RequestMethod.GET, //
-//            produces = { MediaType.APPLICATION_JSON_VALUE})
-//    @ResponseBody
-//    public List<GiftDTO> getEmployeeSortByPrice(@RequestParam(name="sortingmethod")String sortingMethod) {
-//
-//        return giftDAOImp.getAllGiftsSortByName(sortingMethod);
-//
-//    }
 
     @RequestMapping(value = "/gifts/sort", //
             method = RequestMethod.GET, //
@@ -93,10 +70,10 @@ public class GiftController {
 
         List<GiftDTO> list=null;
         if(orderby.equalsIgnoreCase("name")){
-            list=giftDAOImp.getAllGiftsSortByName(sortingMethod);
+            list=giftServiceImp.getAllGiftsSortByName(sortingMethod);
         }
         if(orderby.equalsIgnoreCase("date")){
-            list=giftDAOImp.getAllGiftsSortByDate(sortingMethod);
+            list=giftServiceImp.getAllGiftsSortByDate(sortingMethod);
         }
         return list;
 
@@ -110,7 +87,7 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public GiftDTO getGift(@PathVariable("id")int id) throws DaoException {
-        return giftDAOImp.getGiftById(id);
+        return giftServiceImp.getGiftById(id);
     }
 
 
@@ -119,7 +96,7 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
     public Gift addGift(@RequestBody Gift gift) {
-        return giftDAOImp.addGift(gift);
+        return giftServiceImp.addGift(gift);
 
     }
 
@@ -129,7 +106,7 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
     public TempGift addGifttemp(@RequestBody TempGift gift) throws NoEntityException {
-        return giftDAOImp.addGifttemp(gift);
+        return giftServiceImp.addGifttemp(gift);
 
     }
 
@@ -139,7 +116,7 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
     public Gift updateGift(@RequestBody Gift gift,@PathVariable("id") int id) {
-        return giftDAOImp.updateGift(id,gift);
+        return giftServiceImp.updateGift(id,gift);
 
     }
 
@@ -149,25 +126,11 @@ public class GiftController {
             produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
     public boolean deleteGift(@PathVariable("id") int id) throws ServiceException {
-        return giftDAOImp.deleteGift(id);
+        return giftServiceImp.deleteGift(id);
 
     }
 
 
-//
-//    @ExceptionHandler(DaoException.class)
-//    public Response handleException(DaoException e) {
-//        return new Response(e.getMessage(),e.);
-//    }
-
-//    @GetMapping(value = "/testDefaultControllerAdvice", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    public Response testDefaultControllerAdvice(@RequestParam(required = false, defaultValue = "false") boolean exception)
-//            throws ServiceException {
-//        if (exception) {
-//            throw new ServiceException("BusinessException in testDefaultControllerAdvice");
-//        }
-//        return new Response("OK");
-//    }
 @ExceptionHandler({ServiceException.class})
 public Response handleException(ServiceException e) {
     return new Response(e.getMessage(), e.getErrorcode());

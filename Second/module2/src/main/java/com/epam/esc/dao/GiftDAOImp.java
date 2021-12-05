@@ -10,6 +10,8 @@ import com.epam.esc.entity.TempGift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
@@ -17,10 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@RestController
+@Repository
 public class GiftDAOImp implements GiftDAO{
-
-
 
     private JdbcTemplate jdbcTemplate;
 
