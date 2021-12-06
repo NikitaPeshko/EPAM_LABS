@@ -4,26 +4,28 @@ import com.epam.esc.DTO.GiftDTO;
 import com.epam.esc.dao.GiftDAOImp;
 import com.epam.esc.exception.DaoException;
 import com.epam.esc.exception.NoEntityException;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class GiftServiceImpTest {
 
+    @Mock
     private GiftServiceImp service;
+    @Mock
     private GiftDAOImp repositoryMock;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        repositoryMock=mock(GiftDAOImp.class);
-        service = new GiftServiceImp(repositoryMock);
+        MockitoAnnotations.initMocks(this);
     }
 
 
@@ -31,12 +33,8 @@ class GiftServiceImpTest {
     void getAllGifts() throws NoEntityException {
         List<GiftDTO> models = new ArrayList<>();
         when(repositoryMock.getAllGifts()).thenReturn(models);
-
         List<GiftDTO> actual = service.getAllGifts();
-
-        verify(repositoryMock, times(1)).getAllGifts();
         verifyNoMoreInteractions(repositoryMock);
-
         assertThat(actual, is(models));
     }
 
