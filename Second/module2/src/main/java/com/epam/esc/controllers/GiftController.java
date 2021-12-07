@@ -114,7 +114,6 @@ public class GiftController {
     @RequestMapping(value = "/gifts/{id}", //
             method = RequestMethod.PUT, //
             produces = { MediaType.APPLICATION_JSON_VALUE })
-    @ResponseBody
     public Gift updateGift(@RequestBody Gift gift,@PathVariable("id") int id) {
         return giftServiceImp.updateGift(id,gift);
 
