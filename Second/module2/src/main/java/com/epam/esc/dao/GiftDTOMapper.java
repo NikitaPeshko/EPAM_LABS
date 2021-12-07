@@ -25,7 +25,6 @@ public class GiftDTOMapper implements RowMapper<GiftDTO> {
         gift.setPrice(resultSet.getInt("price"));
         gift.setDuration(resultSet.getInt("duration"));
         gift.setDiscription(resultSet.getString("discription"));
-     //   gift.setCreateDate(resultSet.getTimestamp("create_date"));
         Timestamp createdate=resultSet.getTimestamp("create_date");
 
         TimeZone tz = TimeZone.getTimeZone("UTC");
@@ -42,9 +41,6 @@ public class GiftDTOMapper implements RowMapper<GiftDTO> {
         String[] tags1=tags.split(",");
         Set<String> tagsSet=new HashSet<>(Arrays.asList(tags1));
         gift.setTags(tagsSet);
-
-
-  //      gift.setLastUpdateDate(resultSet.getTimestamp("last_update_date"));
         return gift;
     }
 

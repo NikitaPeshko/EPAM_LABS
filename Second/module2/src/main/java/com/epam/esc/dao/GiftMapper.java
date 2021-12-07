@@ -16,13 +16,6 @@ public class GiftMapper implements RowMapper<Gift> {
         gift.setDuration(resultSet.getInt("duration"));
         gift.setDiscription(resultSet.getString("discription"));
         gift.setCreateDate(resultSet.getTimestamp("create_date"));
-//        Timestamp createdate=resultSet.getTimestamp("create_date");
-
-//        TimeZone tz = TimeZone.getTimeZone("UTC");
-//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
-//        df.setTimeZone(tz);
-//        String nowAsISO = df.format(createdate);
-//        gift.setCreateDate(nowAsISO);
         gift.setLastUpdateDate(resultSet.getTimestamp("last_update_date"));
         return gift;
     }

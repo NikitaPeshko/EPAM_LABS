@@ -91,16 +91,6 @@ class GiftControllerTest {
                 .andExpect(jsonPath("$.name").value("laptop"));
     }
 
-
-    @Test
-    void addGifttemp() throws Exception {
-        this.mockMvc.perform(post("/giftaddtemp")).andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentType("application/json"))
-                .andExpect(jsonPath("$.message").value("Hello World!!!"));
-    }
-
     @Test
     void updateGift() throws Exception {
         Gift model = new Gift();

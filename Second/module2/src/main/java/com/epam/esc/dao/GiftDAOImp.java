@@ -11,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -43,16 +40,6 @@ public class GiftDAOImp implements GiftDAO{
         }
         return list;
     }
-
-
-//    public List<GiftDTO> getGiftWithTag(int id) {
-//        return jdbcTemplate.query("SELECT gift_certificate.idgift_certificate, gift_certificate.gift_name, GROUP_CONCAT(tag.tag_name) as ganre FROM gift_certificate\n" +
-//                "inner join gift_tag on gift_certificate.idgift_certificate=gift_tag.idgift\n" +
-//                "left join tag on gift_tag.idtag=tag.idtag\n" +
-//                "group by gift_certificate.idgift_certificate\n" +
-//                "having idgift_certificate=?",new Object[]{id},new GiftDTOMapper())
-//                .stream().findAny().orElseThrow(()->new DaoException("no user by this id"));
-//    }
 
     public List<GiftDTO> getAllGiftsByPart(String partOfName,String discription) throws NoEntityException, ServiceException {
         String sqlForName="SELECT gift_certificate.*, GROUP_CONCAT(tag.tag_name) as tags FROM gift_certificate\n" +
@@ -196,8 +183,6 @@ public class GiftDAOImp implements GiftDAO{
                 Set<String> tagsSet=new HashSet<>(Arrays.asList(tags));
                 GiftDTO giftDTO=new GiftDTO();
                 giftDTO.setTags(tagsSet);
-
-            //    System.out.println(giftDTO);
                 int coutIterarions=giftDTO.getTags().size();
         List<Gift> giftFromDb=jdbcTemplate.query("select * from gift_certificate\n" +
                 "where gift_name=?",new String[]{gift.getName()},new GiftMapper());
@@ -227,11 +212,7 @@ public class GiftDAOImp implements GiftDAO{
         }catch(DataIntegrityViolationException e){
             throw new ServiceException("Not delet gift","NOTDELETE"+id);
         }
-
-
         return result;
-
-
     }
 
     @Override
@@ -240,7 +221,6 @@ public class GiftDAOImp implements GiftDAO{
                 "price=?,duration=? , create_date=? , last_update_date=? where idgift_certificate=?",
                 new Object[]{gift.getName(),gift.getDiscription(),gift.getPrice(),
                 gift.getDuration(),gift.getCreateDate(),gift.getLastUpdateDate(),id}   );
-
         return gift;
     }
 }

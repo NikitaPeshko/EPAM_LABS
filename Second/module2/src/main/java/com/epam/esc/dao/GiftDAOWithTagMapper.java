@@ -18,7 +18,6 @@ public class GiftDAOWithTagMapper implements RowMapper<GiftDTOWithTag> {
         gift.setGiftName(resultSet.getString("gift_name"));
         String tags=resultSet.getString(("ganre"));
         String[] tags1=tags.split(",");
-       // gift.setTags((resultSet.getString("ganre")));
         Set<String> tagsSet=new HashSet<>(Arrays.asList(tags1));
         gift.setTags(tagsSet);
         return gift;

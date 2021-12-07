@@ -11,7 +11,4 @@ public interface TagDAO {
     List<Tag> getTags();
     Tag getTagById(int id) throws DaoException;
     boolean deleteTag(int id);
-
-
-
 }

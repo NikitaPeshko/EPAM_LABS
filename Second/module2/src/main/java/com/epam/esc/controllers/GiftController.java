@@ -28,7 +28,6 @@ public class GiftController {
     @RequestMapping(value = "/gifts", //
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
     public List<GiftDTO> getEmployees() throws NoEntityException {
         return giftServiceImp.getAllGifts();
 
@@ -38,23 +37,17 @@ public class GiftController {
     @RequestMapping(value = "/gifts/find", //
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
     public List<GiftDTO> getGiftByName(@RequestParam(name="name",defaultValue = "")String name,
                                        @RequestParam(name="discription",defaultValue = "")String discription) throws NoEntityException, ServiceException {
 
 
             return giftServiceImp.getAllGiftsByPart(name,discription);
-
-
-
-
     }
 
 
     @RequestMapping(value = "/gifts/findbytag", //
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
     public List<GiftDTO> getGiftByName(@RequestParam(name="tag",defaultValue = "")String tag) {
 
         return giftServiceImp.getGiftsByTag(tag);
@@ -64,7 +57,6 @@ public class GiftController {
     @RequestMapping(value = "/gifts/sort", //
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
     public List<GiftDTO> getEmployeeSortByPrice(@RequestParam(name="sortingmethod",defaultValue = "asc")String sortingMethod,
                                                 @RequestParam(name = "orderby",defaultValue = "name")String orderby) throws NoEntityException {
 
@@ -76,16 +68,11 @@ public class GiftController {
             list=giftServiceImp.getAllGiftsSortByDate(sortingMethod);
         }
         return list;
-
-
     }
-
-
 
     @RequestMapping(value = "/gifts/{id}", //
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
     public GiftDTO getGift(@PathVariable("id")int id) throws DaoException {
         return giftServiceImp.getGiftById(id);
     }
@@ -94,7 +81,6 @@ public class GiftController {
     @RequestMapping(value = "/gift", //
             method = RequestMethod.POST, //
             produces = { MediaType.APPLICATION_JSON_VALUE })
-    @ResponseBody
     public Gift addGift(@RequestBody Gift gift) {
         return giftServiceImp.addGift(gift);
 
@@ -104,7 +90,6 @@ public class GiftController {
     @RequestMapping(value = "/giftaddtemp", //
             method = RequestMethod.POST, //
             produces = { MediaType.APPLICATION_JSON_VALUE })
-    @ResponseBody
     public TempGift addGifttemp(@RequestBody TempGift gift) throws NoEntityException {
         return giftServiceImp.addGifttemp(gift);
 

@@ -22,7 +22,6 @@ public class TagController {
     @RequestMapping(value = "/tags", //
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
     public List<Tag> gettags() {
         return tagDAO.getTags();
     }
@@ -32,7 +31,6 @@ public class TagController {
     @RequestMapping(value = "/tags/{id}", //
             method = RequestMethod.GET, //
             produces = { MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
     public Tag getTag(@PathVariable("id")int id) throws DaoException {
         return tagDAO.getTagById(id);
     }
@@ -41,7 +39,6 @@ public class TagController {
     @RequestMapping(value = "/tags/{id}", //
             method = RequestMethod.DELETE, //
             produces = { MediaType.APPLICATION_JSON_VALUE })
-    @ResponseBody
     public boolean deleteTag(@PathVariable("id") int id) {
         return tagDAO.deleteTag(id);
 
@@ -50,13 +47,8 @@ public class TagController {
     @RequestMapping(value = "/tag", //
             method = RequestMethod.POST, //
             produces = { MediaType.APPLICATION_JSON_VALUE })
-    @ResponseBody
     public Tag addTag(@RequestBody Tag tag) {
         return tagDAO.addTag(tag);
 
     }
-
-
-
-
 }

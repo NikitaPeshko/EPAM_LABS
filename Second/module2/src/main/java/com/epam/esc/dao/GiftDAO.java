@@ -19,7 +19,4 @@ public interface GiftDAO {
     boolean deleteGift(int id) throws ServiceException;
     Gift updateGift(int id,Gift gift);
     TempGift addGifttemp(TempGift gift) throws NoEntityException;
-
-
-
 }
