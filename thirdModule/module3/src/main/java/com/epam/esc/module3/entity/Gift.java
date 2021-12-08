@@ -1,55 +1,52 @@
 package com.epam.esc.module3.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Set;
 
-//@Entity
+@Entity
+@Table(name = "gift_certigicate")
 public class Gift {
-   // @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int gift_id;
+    @Column
     private String name;
+    @Column
     private String discription;
+    @Column
     private int price;
+    @Column
     private int duration;
+    @Column
     private Timestamp createDate;
+    @Column
     private Timestamp lastUpdateDate;
-    private Set<String> listOfTag;
 
-
-    public Gift(int id, String name, String discription, int price, int duration, Timestamp createDate, Timestamp lastUpdateDate, Set<String> listOfTag) {
-        this.id = id;
-        this.name = name;
-        this.discription = discription;
-        this.price = price;
-        this.duration = duration;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
-        this.listOfTag = listOfTag;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "gift_tag",
+                joinColumns = @JoinColumn(name = "idgift"),
+                inverseJoinColumns =@JoinColumn(name = "idtag") )
+    private Set<Tag> listOfTag;
 
     public Gift() {
     }
 
-    public Set<String> getListOfTag() {
+    public Set<Tag> getListOfTag() {
         return listOfTag;
     }
 
-    public void setListOfTag(Set<String> listOfTag) {
+    public void setListOfTag(Set<Tag> listOfTag) {
         this.listOfTag = listOfTag;
     }
 
     public int getId() {
-        return id;
+        return gift_id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.gift_id = id;
     }
 
     public String getName() {
@@ -103,7 +100,7 @@ public class Gift {
     @Override
     public String toString() {
         return "Gift{" +
-                "id='" + id + '\'' +
+                "id='" + gift_id + '\'' +
                 ", name='" + name + '\'' +
                 ", discription='" + discription + '\'' +
                 ", price=" + price +
@@ -118,11 +115,56 @@ public class Gift {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Gift gift = (Gift) o;
-        return price == gift.price && duration == gift.duration && Objects.equals(id, gift.id) && Objects.equals(name, gift.name) && Objects.equals(discription, gift.discription) && Objects.equals(createDate, gift.createDate) && Objects.equals(lastUpdateDate, gift.lastUpdateDate);
+        return price == gift.price && duration == gift.duration && Objects.equals(gift_id, gift.gift_id) && Objects.equals(name, gift.name) && Objects.equals(discription, gift.discription) && Objects.equals(createDate, gift.createDate) && Objects.equals(lastUpdateDate, gift.lastUpdateDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, discription, price, duration, createDate, lastUpdateDate);
+        return Objects.hash(gift_id, name, discription, price, duration, createDate, lastUpdateDate);
+    }
+
+    public static class Builder{
+        private Gift newGift;
+
+        public Builder() {
+            newGift=new Gift();
+        }
+        public Builder setGiftId(int giftId) {
+            newGift.gift_id = giftId;
+            return this;
+        }
+        public Builder setGiftName(String name) {
+            newGift.name = name;
+            return this;
+        }
+        public Builder setGiftDiscription(String discription) {
+            newGift.discription = discription;
+            return this;
+        }
+        public Builder setGiftDuration(int duration) {
+            newGift.duration = duration;
+            return this;
+        }
+        public Builder setGiftPrice(int price) {
+            newGift.price = price;
+            return this;
+        }
+        public Builder setGiftCreateDate(Timestamp createDate) {
+            newGift.createDate= createDate;
+            return this;
+        }
+        public Builder setGiftLastUpdateDate(Timestamp lastUpdateDate) {
+            newGift.lastUpdateDate= lastUpdateDate;
+            return this;
+        }
+        public Builder setGiftTags(Set<Tag> tags) {
+            newGift.listOfTag= tags;
+            return this;
+        }
+        public Gift build() {
+            return newGift;
+        }
+
+
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GiftCertificateController {
 
     @GetMapping("/gifts")
-    public ResponseEntity getAllGifts(){
+    public ResponseEntity registration(){
         try {
             return ResponseEntity.ok().body("All is ko with server");
 
