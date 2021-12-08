@@ -24,7 +24,7 @@ public class Gift {
     @Column
     private Timestamp lastUpdateDate;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name = "gift_tag",
                 joinColumns = @JoinColumn(name = "idgift"),
                 inverseJoinColumns =@JoinColumn(name = "idtag") )

@@ -2,12 +2,11 @@ package com.epam.esc.module3.controllers;
 
 
 import com.epam.esc.module3.entity.Gift;
+import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.service.GiftServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,6 +37,17 @@ public class GiftCertificateController {
             throw new RuntimeException("Employee not found for the Id:"+id);
         }
         return gift;
+    }
+
+    @PostMapping("/gifts")
+    public Gift get(@RequestBody Gift gift) throws DAOException {
+        giftService.addGift(gift);
+        return gift;
+    }
+
+    @DeleteMapping("/gifts/{id}")
+    public boolean deleteGift(@PathVariable int id) {
+        return giftService.deleteGift(id);
     }
 
 
