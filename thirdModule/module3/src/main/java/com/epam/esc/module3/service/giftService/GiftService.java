@@ -1,4 +1,4 @@
-package com.epam.esc.module3.service;
+package com.epam.esc.module3.service.giftService;
 
 import com.epam.esc.module3.entity.Gift;
 import com.epam.esc.module3.exception.DAOException;

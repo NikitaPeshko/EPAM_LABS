@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -12,18 +13,21 @@ public class Order {
     private int orderId;
     @Column
     private Timestamp dataOfOrder;
+    private int quantity;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userInOrder;
 
     public Order() {
     }
 
-    public Order(int orderId, Timestamp dataOfOrder, User user) {
+    public Order(int orderId, Timestamp dataOfOrder, int quantity, User userInOrder) {
         this.orderId = orderId;
         this.dataOfOrder = dataOfOrder;
-        this.user = user;
+        this.quantity = quantity;
+        this.userInOrder = userInOrder;
     }
 
     public int getOrderId() {
@@ -42,12 +46,20 @@ public class Order {
         this.dataOfOrder = dataOfOrder;
     }
 
-    public User getUser() {
-        return user;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public User getUserInOrder() {
+        return userInOrder;
+    }
+
+    public void setUserInOrder(User userInOrder) {
+        this.userInOrder = userInOrder;
     }
 
     @Override
@@ -55,11 +67,21 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return orderId == order.orderId && Objects.equals(dataOfOrder, order.dataOfOrder) && Objects.equals(user, order.user);
+        return orderId == order.orderId && quantity == order.quantity && Objects.equals(dataOfOrder, order.dataOfOrder) && Objects.equals(userInOrder, order.userInOrder);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, dataOfOrder, user);
+        return Objects.hash(orderId, dataOfOrder, quantity, userInOrder);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", dataOfOrder=" + dataOfOrder +
+                ", quantity=" + quantity +
+                ", userInOrder=" + userInOrder +
+                '}';
     }
 }

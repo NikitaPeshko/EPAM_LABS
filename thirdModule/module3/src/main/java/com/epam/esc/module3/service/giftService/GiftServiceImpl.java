@@ -1,7 +1,7 @@
-package com.epam.esc.module3.service;
+package com.epam.esc.module3.service.giftService;
 
 
-import com.epam.esc.module3.dao.GiftDAOImpl;
+import com.epam.esc.module3.dao.giftDAO.GiftDAOImpl;
 import com.epam.esc.module3.entity.Gift;
 import com.epam.esc.module3.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;

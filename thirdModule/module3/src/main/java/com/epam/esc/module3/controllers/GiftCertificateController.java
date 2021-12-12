@@ -3,7 +3,7 @@ package com.epam.esc.module3.controllers;
 
 import com.epam.esc.module3.entity.Gift;
 import com.epam.esc.module3.exception.DAOException;
-import com.epam.esc.module3.service.GiftServiceImpl;
+import com.epam.esc.module3.service.giftService.GiftServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
