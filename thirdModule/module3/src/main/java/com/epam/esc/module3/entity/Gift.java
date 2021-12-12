@@ -24,6 +24,10 @@ public class Gift {
     @Column
     private Timestamp lastUpdateDate;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name = "gift_tag",
                 joinColumns = @JoinColumn(name = "idgift"),
