@@ -5,6 +5,7 @@ import com.epam.esc.module3.dao.giftDAO.GiftDAO;
 import com.epam.esc.module3.entity.Gift;
 import com.epam.esc.module3.exception.DAOException;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,5 +52,14 @@ public class GiftDAOImpl implements GiftDAO {
         }
 
         return result;
+    }
+    @Override
+    public List<Gift> findGiftByPatName(String partOfName) {
+        Session session = entityManager.unwrap(Session.class);
+        Query query=session.createSQLQuery("select * from gift_certigicate where name like :partOfName").addEntity(Gift.class);
+        query.setParameter("partOfName","%"+partOfName+"%");
+        List<Gift> gifts =query.list();
+
+        return gifts;
     }
 }

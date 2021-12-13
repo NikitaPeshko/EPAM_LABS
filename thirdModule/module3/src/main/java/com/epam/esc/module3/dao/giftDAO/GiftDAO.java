@@ -10,5 +10,6 @@ public interface GiftDAO {
     Gift getGiftById(int id);
     Gift addGift(Gift gift) throws DAOException;
     boolean deleteGift(int id);
+    List<Gift> findGiftByPatName(String partOfName);
 
 }

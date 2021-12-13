@@ -35,4 +35,8 @@ public class GiftServiceImpl implements GiftService {
         return giftDAO.deleteGift(id);
 
     }
+    @Override
+    public List<Gift> findByName(String partOfName) {
+        return giftDAO.findGiftByPatName(partOfName);
+    }
 }

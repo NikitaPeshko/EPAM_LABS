@@ -51,4 +51,13 @@ public class GiftCertificateController {
     }
 
 
+
+    @GetMapping(value = "/gifts/findbyname")
+    public List<Gift> getGiftByName(@RequestParam(name="name",defaultValue = "")String name) {
+
+        return giftService.findByName(name);
+    }
+
+
+
 }
