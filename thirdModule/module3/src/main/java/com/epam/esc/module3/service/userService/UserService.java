@@ -13,7 +13,7 @@ public interface UserService {
     User addUser(User user) throws DAOException;
     boolean deleteUserById(int id);
     User getUserById(int id) throws NoEntityException;
-    List<User> getAllUsers();
+    List<User> getAllUsers(int numberOfPage,int numberOfItemOnPage);
     void updateUser(User user,int id);
     void buyGift(int userID,int giftID);
     List<Order> getAllUsersOrders(int id);

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDAO {
-    List<User> getAllUsers();
+    List<User> getAllUsers(int numberOfPage,int numberOfItemOnPage);
     User getUserById(int id) throws NoEntityException;
     User addUser(User user) throws DAOException;
     boolean deleteUser(int id);

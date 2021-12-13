@@ -25,8 +25,8 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
+    public List<User> getAllUsers(@RequestParam(name = "page",defaultValue = "0") int numberOfPage, @RequestParam(name = "content",defaultValue = "5") int numberOfItemOnPage){
+        return userService.getAllUsers(numberOfPage,numberOfItemOnPage);
     }
 
     @GetMapping("/{id}")

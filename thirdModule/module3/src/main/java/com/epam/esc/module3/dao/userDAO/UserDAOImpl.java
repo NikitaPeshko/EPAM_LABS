@@ -6,6 +6,7 @@ import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,9 +29,14 @@ public class UserDAOImpl implements UserDAO{
 
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(int firstitem,int numberOfItemOnPage) {
         Session session = entityManager.unwrap(Session.class);
-        List<User> users =  session.createQuery("From User ").list();
+        Query query=session.createQuery("From User ");
+        query.setFirstResult(firstitem);
+        query.setMaxResults(numberOfItemOnPage);
+
+        List<User> users =  query.list();
+
         return users;
     }
 
@@ -81,10 +87,11 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public void buyGift(int userID, int giftID) {
-//        Session session = entityManager.unwrap(Session.class);
+        Session session = entityManager.unwrap(Session.class);
 //        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
 //        System.out.println(timestamp);
 //        Query query=session.createSQLQuery("insert into");
+        //session.createSQLQuery("select*from gift_certificate");
 
     }
 

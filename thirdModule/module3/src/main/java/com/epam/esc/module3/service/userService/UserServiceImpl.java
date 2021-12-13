@@ -42,8 +42,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
+    public List<User> getAllUsers(int numberOfPage,int numberOfItemOnPage) {
+        int firstitem=(numberOfPage-1)*numberOfItemOnPage;
+
+        return userDAO.getAllUsers(firstitem,numberOfItemOnPage);
     }
 
     @Override
