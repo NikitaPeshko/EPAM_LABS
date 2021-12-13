@@ -16,21 +16,34 @@ public class User {
     @Column
     private String email;
 
-    @OneToMany(mappedBy = "userInOrder",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<Order> orders;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Gift> gifts;
 
+
+
+///////////////////////////////////////////////
+    @OneToMany(mappedBy = "userInOrder",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<Order> orders;
+
     public User() {
     }
 
-    public User(int userId, String name, String email, List<Order> orders, List<Gift> gifts) {
+
+    public User(int userId, String name, String email, List<Gift> gifts, List<Order> orders) {
         this.userId = userId;
         this.name = name;
         this.email = email;
-        this.orders = orders;
         this.gifts = gifts;
+        this.orders = orders;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public int getUserId() {
@@ -57,14 +70,6 @@ public class User {
         this.email = email;
     }
 
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
     public List<Gift> getGifts() {
         return gifts;
     }
@@ -78,11 +83,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return userId == user.userId && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(orders, user.orders) && Objects.equals(gifts, user.gifts);
+        return userId == user.userId && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(gifts, user.gifts) && Objects.equals(orders, user.orders);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, name, email, orders, gifts);
+        return Objects.hash(userId, name, email, gifts, orders);
     }
 }

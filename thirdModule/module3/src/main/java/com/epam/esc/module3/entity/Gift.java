@@ -28,6 +28,11 @@ public class Gift {
     @JoinColumn(name = "user_id")
     private User user;
 
+////////////////
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name = "gift_tag",
                 joinColumns = @JoinColumn(name = "idgift"),

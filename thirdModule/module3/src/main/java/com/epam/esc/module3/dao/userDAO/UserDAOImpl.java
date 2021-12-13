@@ -1,6 +1,7 @@
 package com.epam.esc.module3.dao.userDAO;
 
 import com.epam.esc.module3.entity.Gift;
+import com.epam.esc.module3.entity.Order;
 import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
@@ -12,6 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,4 +79,19 @@ public class UserDAOImpl implements UserDAO{
     }
 
 
+    @Override
+    public void buyGift(int userID, int giftID) {
+//        Session session = entityManager.unwrap(Session.class);
+//        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
+//        System.out.println(timestamp);
+//        Query query=session.createSQLQuery("insert into");
+
+    }
+
+    @Override
+    public List<Order> getAllOrders(int id) {
+        Session session = entityManager.unwrap(Session.class);
+        List<Order> orders =  session.createQuery("From Order ").list();
+        return orders;
+    }
 }

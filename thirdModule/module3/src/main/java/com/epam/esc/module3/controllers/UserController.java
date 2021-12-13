@@ -1,5 +1,6 @@
 package com.epam.esc.module3.controllers;
 
+import com.epam.esc.module3.entity.Order;
 import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
@@ -49,6 +50,17 @@ public class UserController {
     @PutMapping("/{id}")
     public void updateUser(@RequestBody User user,@PathVariable("id") int id) {
         userService.updateUser(user,id);
+    }
+
+    @PostMapping("/buygift/{userid}/{giftid}")
+    public void bueGift(@PathVariable("userid") int userId,@PathVariable("giftid")int giftId) {
+        userService.buyGift(userId,giftId);
+    }
+
+    @GetMapping("/{id}/orders")
+    public List<Order> getAllUsersOrder(@PathVariable("id")int id){
+        return userService.getAllUsersOrders(id);
+
     }
 
 }
