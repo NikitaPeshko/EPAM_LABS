@@ -7,10 +7,14 @@ import com.epam.esc.module3.exception.NoEntityException;
 import com.epam.esc.module3.exception.Response;
 import com.epam.esc.module3.service.userService.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping("/users")
@@ -24,9 +28,26 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<User> getAllUsers(@RequestParam(name = "page",defaultValue = "0") int numberOfPage, @RequestParam(name = "content",defaultValue = "5") int numberOfItemOnPage){
-        return userService.getAllUsers(numberOfPage,numberOfItemOnPage);
+    @GetMapping(produces = { "application/hal+json" })
+    public CollectionModel<User> getAllUsers(@RequestParam(name = "page",defaultValue = "1") int numberOfPage, @RequestParam(name = "content",defaultValue = "5") int numberOfItemOnPage){
+
+        List<User> allUsers=userService.getAllUsers(numberOfPage,numberOfItemOnPage);
+        for (final User user : allUsers) {
+            int userId  = user.getUserId();
+            Link selfLink = linkTo(UserController.class).slash(userId)
+                    .withSelfRel();
+            user.add(selfLink);
+//            if (orderService.getAllOrdersForCustomer(customerId)
+//                    .size() > 0) {
+//                final Link ordersLink = linkTo(methodOn(CustomerController.class).getOrdersForCustomer(customerId))
+//                        .withRel("allOrders");
+//                customer.add(ordersLink);
+//            }
+        }
+
+        Link link = linkTo(UserController.class).withSelfRel();
+        CollectionModel<User> result = CollectionModel.of(allUsers, link);
+        return result;
     }
 
     @GetMapping("/{id}")
