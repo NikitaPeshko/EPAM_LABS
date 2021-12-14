@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/users")
@@ -37,12 +38,11 @@ public class UserController {
             Link selfLink = linkTo(UserController.class).slash(userId)
                     .withSelfRel();
             user.add(selfLink);
-//            if (orderService.getAllOrdersForCustomer(customerId)
-//                    .size() > 0) {
-//                final Link ordersLink = linkTo(methodOn(CustomerController.class).getOrdersForCustomer(customerId))
-//                        .withRel("allOrders");
-//                customer.add(ordersLink);
-//            }
+            if (userService.getAllUsersOrders(userId).size() > 0) {
+                final Link ordersLink = linkTo(methodOn(UserController.class).getAllUsersOrder(userId))
+                        .withRel("allOrders");
+                user.add(ordersLink);
+            }
         }
 
         Link link = linkTo(UserController.class).withSelfRel();

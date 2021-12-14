@@ -98,7 +98,11 @@ public class UserDAOImpl implements UserDAO{
     @Override
     public List<Order> getAllOrders(int id) {
         Session session = entityManager.unwrap(Session.class);
-        List<Order> orders =  session.createQuery("From Order ").list();
+        User user=new User();
+        user.setUserId(id);
+        Query query=session.createQuery("From Order where userInOrder=:userId ");
+        query.setParameter("userId",user);
+        List<Order> orders=query.list();
         return orders;
     }
 }

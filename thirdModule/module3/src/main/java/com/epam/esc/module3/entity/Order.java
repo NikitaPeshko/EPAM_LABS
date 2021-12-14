@@ -1,5 +1,7 @@
 package com.epam.esc.module3.entity;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends RepresentationModel<Order> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
