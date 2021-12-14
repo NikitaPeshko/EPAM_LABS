@@ -39,4 +39,9 @@ public class GiftServiceImpl implements GiftService {
     public List<Gift> findByName(String partOfName) {
         return giftDAO.findGiftByPatName(partOfName);
     }
+
+    @Override
+    public List<Gift> findGiftByTagName(String tagName) {
+        return giftDAO.findByTagName(tagName);
+    }
 }

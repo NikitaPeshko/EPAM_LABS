@@ -11,4 +11,5 @@ public interface GiftService {
     Gift addGift(Gift gift) throws DAOException;
     boolean deleteGift(int id);
     List<Gift> findByName(String partOfName);
+    List<Gift> findGiftByTagName(String tagName);
 }

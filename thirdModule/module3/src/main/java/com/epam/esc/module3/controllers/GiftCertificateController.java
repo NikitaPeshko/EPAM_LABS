@@ -58,6 +58,12 @@ public class GiftCertificateController {
         return giftService.findByName(name);
     }
 
+    @GetMapping("/findbytag")
+    public List<Gift> findGiftByTagName(@RequestParam("tagname")String tagName){
+        System.out.println(tagName);
+        return giftService.findGiftByTagName(tagName);
+    }
+
 
 
 }
