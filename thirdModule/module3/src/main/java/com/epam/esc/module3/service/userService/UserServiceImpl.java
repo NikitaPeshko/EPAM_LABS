@@ -8,6 +8,7 @@ import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService{
     private UserDAOImpl userDAO;
 
     @Override
+    @Transactional
     public User addUser(User user) throws DAOException {
         return userDAO.addUser(user);
 
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateUser(User user,int id) {
         user.setUserId(id);
-        userDAO.updateUser(user);
+        userDAO.updateUser(user,id);
     }
 
 

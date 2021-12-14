@@ -60,6 +60,7 @@ public class UserDAOImpl implements UserDAO{
         }
         currentSession.save(user);
 
+
         return user;
 
     }
@@ -79,9 +80,26 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     @Transactional
-    public void updateUser(User user) {
+    public void updateUser(User user,int id) {
         Session session = entityManager.unwrap(Session.class);
-        session.update(user);
+        User userfromdb=session.get(User.class,id);
+        if(user.getName()==null){
+            userfromdb.setEmail(user.getEmail());
+        }
+        if (user.getEmail()==null){
+            userfromdb.setName(user.getName());
+        }
+        if ((user.getName()!=null)&&(user.getEmail()!=null)){
+            userfromdb.setName(user.getName());
+            userfromdb.setEmail(user.getEmail());
+            session.update(userfromdb);
+
+        }else
+        {
+            session.update(userfromdb);
+        }
+
+
     }
 
 

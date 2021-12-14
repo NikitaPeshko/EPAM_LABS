@@ -14,7 +14,7 @@ public interface UserDAO {
     User getUserById(int id) throws NoEntityException;
     User addUser(User user) throws DAOException;
     boolean deleteUser(int id);
-    void updateUser(User user);
+    void updateUser(User user,int id);
     void buyGift(int userID,int giftID);
     List<Order> getAllOrders(int id);
 
