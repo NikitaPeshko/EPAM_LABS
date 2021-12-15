@@ -7,7 +7,7 @@ import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
 
 import java.util.List;
-import java.util.Optional;
+
 
 public interface UserService {
     User addUser(User user) throws DAOException;
@@ -17,6 +17,7 @@ public interface UserService {
     void updateUser(User user,int id);
     void buyGift(int userID,int giftID);
     List<Order> getAllUsersOrders(int id);
+
 
 
 

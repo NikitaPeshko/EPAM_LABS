@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,11 +105,34 @@ public class UserDAOImpl implements UserDAO{
 
 
     @Override
+    @Transactional
     public void buyGift(int userID, int giftID) {
         Session session = entityManager.unwrap(Session.class);
-//        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
-//        System.out.println(timestamp);
-//        Query query=session.createSQLQuery("insert into");
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
+
+        User user=new User();
+        user.setUserId(userID);
+
+        Gift gift=session.get(Gift.class,giftID);
+        gift.setUser(user);
+
+        List<Gift> list=new LinkedList<Gift>();
+        list.add(gift);
+        Order order=new Order();
+        order.setDataOfOrder(timestamp);
+        order.setAmount(gift.getPrice());
+        order.setGiftsinorder(list);
+        order.setUserInOrder(user);
+        session.save(order);
+        System.out.println(order.getOrderId());
+        gift.setOrder(order);
+
+
+
+
+
+     //   session.save();
+    //        Query query=session.createSQLQuery("insert into");
         //session.createSQLQuery("select*from gift_certificate");
 
     }

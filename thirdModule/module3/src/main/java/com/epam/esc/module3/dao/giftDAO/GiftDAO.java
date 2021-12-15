@@ -12,5 +12,6 @@ public interface GiftDAO {
     boolean deleteGift(int id);
     List<Gift> findGiftByPatName(String partOfName);
     List<Gift> findByTagName(String tagName);
+    Gift changePriceOfGift(int id,int newPrice);
 
 }

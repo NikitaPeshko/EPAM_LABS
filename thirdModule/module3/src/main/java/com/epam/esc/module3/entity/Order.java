@@ -38,6 +38,12 @@ public class Order extends RepresentationModel<Order> {
         this.giftsinorder = giftsinorder;
     }
 
+
+
+    public void setUserInOrder(User userInOrder) {
+        this.userInOrder = userInOrder;
+    }
+
     public List<Gift> getGiftsinorder() {
         return giftsinorder;
     }

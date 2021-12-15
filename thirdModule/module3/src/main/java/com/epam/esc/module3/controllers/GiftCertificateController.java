@@ -64,6 +64,11 @@ public class GiftCertificateController {
         return giftService.findGiftByTagName(tagName);
     }
 
+    @PutMapping("/gifts/changeprice/{id}")
+    public Gift changePriceOfGift(@PathVariable("id") int id,@RequestParam("price")int newprice){
+        return giftService.changePriceOfGift(id,newprice);
+    }
+
 
 
 }

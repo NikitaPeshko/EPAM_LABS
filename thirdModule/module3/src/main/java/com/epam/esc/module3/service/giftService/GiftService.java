@@ -12,4 +12,5 @@ public interface GiftService {
     boolean deleteGift(int id);
     List<Gift> findByName(String partOfName);
     List<Gift> findGiftByTagName(String tagName);
+    Gift changePriceOfGift(int id,int newPrice);
 }

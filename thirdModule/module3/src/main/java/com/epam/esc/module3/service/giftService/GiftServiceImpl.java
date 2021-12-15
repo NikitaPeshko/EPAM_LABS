@@ -44,4 +44,9 @@ public class GiftServiceImpl implements GiftService {
     public List<Gift> findGiftByTagName(String tagName) {
         return giftDAO.findByTagName(tagName);
     }
+
+    @Override
+    public Gift changePriceOfGift(int id, int newPrice) {
+        return giftDAO.changePriceOfGift(id,newPrice);
+    }
 }

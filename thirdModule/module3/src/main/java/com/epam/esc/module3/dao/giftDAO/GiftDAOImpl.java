@@ -105,4 +105,18 @@ public class GiftDAOImpl implements GiftDAO {
 
         return gifts;
     }
+
+
+    @Override
+    @Transactional
+    public Gift changePriceOfGift(int id, int newPrice) {
+        Session session = entityManager.unwrap(Session.class);
+        Gift gift=session.get(Gift.class,id);
+        gift.setPrice(newPrice);
+        session.update(gift);
+        Gift giftWithNewPrice=session.get(Gift.class,id);
+
+
+        return giftWithNewPrice;
+    }
 }

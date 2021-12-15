@@ -42,6 +42,14 @@ public class Gift {
     public Gift() {
     }
 
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Set<Tag> getListOfTag() {
         return listOfTag;
     }
