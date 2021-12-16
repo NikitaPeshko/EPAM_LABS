@@ -83,6 +83,11 @@ public class UserController {
         return userService.getAllUsersOrders(id);
 
     }
+    @GetMapping("/{userid}/orders/{idorder}")
+    public Order getUserOrderById(@PathVariable("userid")int userID,@PathVariable("idorder")int orderId) throws NoEntityException {
+        return userService.getUserOrderById(userID,orderId);
+
+    }
 
 
 }

@@ -126,11 +126,6 @@ public class UserDAOImpl implements UserDAO{
         session.save(order);
         System.out.println(order.getOrderId());
         gift.setOrder(order);
-
-
-
-
-
      //   session.save();
     //        Query query=session.createSQLQuery("insert into");
         //session.createSQLQuery("select*from gift_certificate");
@@ -146,5 +141,20 @@ public class UserDAOImpl implements UserDAO{
         query.setParameter("userId",user);
         List<Order> orders=query.list();
         return orders;
+    }
+
+    @Override
+    public Order getUserOrderById(int userID,int orderId) throws NoEntityException {
+        Session session = entityManager.unwrap(Session.class);
+        User user=new User();
+        user.setUserId(userID);
+        Query query=session.createQuery("From Order where userInOrder=:userId and orderId=:orderID");
+        query.setParameter("userId",user);
+        query.setParameter("orderID",orderId);
+        List<Order> order=query.list();
+        if (order.isEmpty()){
+            throw new NoEntityException("No order with this ID in this user","ERRORCODE");
+        }
+        return order.get(0);
     }
 }

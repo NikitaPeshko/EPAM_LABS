@@ -62,5 +62,8 @@ public class UserServiceImpl implements UserService{
         return userDAO.getAllOrders(id);
     }
 
-
+    @Override
+    public Order getUserOrderById(int userID,int orderId) throws NoEntityException {
+        return userDAO.getUserOrderById(userID,orderId);
+    }
 }
