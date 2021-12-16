@@ -69,6 +69,12 @@ public class GiftCertificateController {
         return giftService.changePriceOfGift(id,newprice);
     }
 
+    @GetMapping("/gifts/gindbyseveraltags")
+    public List<Gift> findGiftsBySeveralTags(@RequestParam("tag")List<String>tags){
+        System.out.println(tags);
+        return giftService.findGiftBySeveralTags(tags);
+
+    }
 
 
 }

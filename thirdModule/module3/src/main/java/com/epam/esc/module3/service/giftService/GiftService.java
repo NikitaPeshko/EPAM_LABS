@@ -13,4 +13,5 @@ public interface GiftService {
     List<Gift> findByName(String partOfName);
     List<Gift> findGiftByTagName(String tagName);
     Gift changePriceOfGift(int id,int newPrice);
+    List<Gift> findGiftBySeveralTags(List<String>tags);
 }

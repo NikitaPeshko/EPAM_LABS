@@ -13,5 +13,6 @@ public interface GiftDAO {
     List<Gift> findGiftByPatName(String partOfName);
     List<Gift> findByTagName(String tagName);
     Gift changePriceOfGift(int id,int newPrice);
+    List<Gift> findGiftBySeveralTags(List<String> tags);
 
 }

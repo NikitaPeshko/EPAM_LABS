@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Repository
 @Transactional
@@ -91,10 +92,6 @@ public class GiftDAOImpl implements GiftDAO {
                 "group by gift_certigicate.gift_id";
 
 
-
-
-
-
         Query query=session.createSQLQuery(sql).addEntity(Gift.class);
         query.setString("nameoftag",tagName);
     //    query.setParameter("nameoftag","'"+tagName+"'");
@@ -118,5 +115,29 @@ public class GiftDAOImpl implements GiftDAO {
 
 
         return giftWithNewPrice;
+    }
+
+    @Override
+    public List<Gift> findGiftBySeveralTags(List<String> tags) {
+        Session session = entityManager.unwrap(Session.class);
+        String sql="select gift_certigicate.*, group_concat(t1.tag_name)as tags \n" +
+                "from gift_certigicate join gift_tag ft1 \n" +
+                "on ft1.idgift = gift_certigicate.gift_id \n" +
+                "join tags t1 on t1.tag_id = ft1.idtag \n" +
+                "group by gift_certigicate.gift_id";
+        String str="";
+        for (String tag:tags){
+            str=str+"%"+tag+"%,";
+        }
+        String tagsInStringFormat=str.substring(0,str.length()-1);
+        String havingInSQLQuary=" having tags like '"+tagsInStringFormat+"'";
+        sql=sql+havingInSQLQuary;
+        System.out.println(sql);
+
+
+        Query query=session.createSQLQuery(sql).addEntity(Gift.class);
+        List<Gift> gifts=query.list();
+
+        return gifts;
     }
 }
