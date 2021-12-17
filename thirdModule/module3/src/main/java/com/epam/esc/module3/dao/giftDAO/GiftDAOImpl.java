@@ -111,8 +111,6 @@ public class GiftDAOImpl implements GiftDAO {
         gift.setPrice(newPrice);
         session.update(gift);
         Gift giftWithNewPrice=session.get(Gift.class,id);
-
-
         return giftWithNewPrice;
     }
 
