@@ -154,9 +154,7 @@ public class GiftDAOImpl implements GiftDAO {
         for (Order order:orders){
             for (Gift gift:order.getGiftsinorder()){
                 gifts.add(gift);
-
             }
-
         }
         List<Tag> allTags=new LinkedList<>();
         for (Gift gift:gifts){
@@ -164,9 +162,27 @@ public class GiftDAOImpl implements GiftDAO {
                 allTags.add(tag);
             }
         }
+        Map<String,Integer> tagsAndNubmers=new HashMap<>();
+        for (Tag tag:allTags){
+            if(tagsAndNubmers.containsKey(tag.getTagName())){
+                tagsAndNubmers.put(tag.getTagName(),tagsAndNubmers.get(tag.getTagName())+1);
+            }else{
+                tagsAndNubmers.put(tag.getTagName(),1);
 
-        System.out.println(allTags);
+            }
+        }
+        String nameOfmostPopularTag="";
+        int maxValue=Collections.max(tagsAndNubmers.values());
 
-        return null;
+        for (Map.Entry<String, Integer> entry : tagsAndNubmers.entrySet()){
+            if(entry.getValue()==maxValue){
+                nameOfmostPopularTag=entry.getKey();
+            }
+
+        }
+        Query query1=session.createQuery("From Tag where tagName=:nameofmostpopulartag");
+        query1.setParameter("nameofmostpopulartag",nameOfmostPopularTag);
+        List<Tag> mostPopulatTag=  query1.list();
+        return mostPopulatTag.get(0);
     }
 }
