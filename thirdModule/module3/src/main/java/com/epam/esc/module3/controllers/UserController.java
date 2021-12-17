@@ -80,7 +80,7 @@ public class UserController {
 
 
     @PostMapping("/buygift/{userid}")
-    public void bueGift(@PathVariable("userid") int userId,@RequestParam("gift")List<Integer>gifts) {
+    public void bueGift(@PathVariable("userid") int userId,@RequestParam("gift")List<Integer>gifts) throws NoEntityException {
         userService.buyGifts(userId,gifts);
     }
     @GetMapping("/{id}/orders")
@@ -93,6 +93,8 @@ public class UserController {
         return userService.getUserOrderById(userID,orderId);
 
     }
+
+
 
 
 }

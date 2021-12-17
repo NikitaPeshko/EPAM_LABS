@@ -2,6 +2,7 @@ package com.epam.esc.module3.controllers;
 
 
 import com.epam.esc.module3.entity.Gift;
+import com.epam.esc.module3.entity.Tag;
 import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.service.giftService.GiftServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,12 @@ public class GiftCertificateController {
     public List<Gift> findGiftsBySeveralTags(@RequestParam("tag")List<String>tags){
         System.out.println(tags);
         return giftService.findGiftBySeveralTags(tags);
+
+    }
+
+    @GetMapping("/gifts/mostpopulartag")
+    public Tag findGiftsBySeveralTags(){
+        return giftService.findMostPopulaarTag();
 
     }
 

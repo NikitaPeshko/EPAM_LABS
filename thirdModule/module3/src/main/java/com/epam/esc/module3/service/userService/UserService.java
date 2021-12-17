@@ -2,6 +2,7 @@ package com.epam.esc.module3.service.userService;
 
 import com.epam.esc.module3.entity.Gift;
 import com.epam.esc.module3.entity.Order;
+import com.epam.esc.module3.entity.Tag;
 import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
@@ -18,7 +19,7 @@ public interface UserService {
     void buyGift(int userID,int giftID);
     List<Order> getAllUsersOrders(int id);
     Order getUserOrderById(int userID,int orderId) throws NoEntityException;
-    void buyGifts(int userID, List<Integer>gifts);
+    void buyGifts(int userID, List<Integer>gifts) throws NoEntityException;
 
 
 

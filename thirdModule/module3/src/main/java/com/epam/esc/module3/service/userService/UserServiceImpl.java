@@ -3,6 +3,7 @@ package com.epam.esc.module3.service.userService;
 import com.epam.esc.module3.dao.userDAO.UserDAOImpl;
 import com.epam.esc.module3.entity.Gift;
 import com.epam.esc.module3.entity.Order;
+import com.epam.esc.module3.entity.Tag;
 import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void buyGifts(int userID, List<Integer>gifts) {
+    public void buyGifts(int userID, List<Integer>gifts) throws NoEntityException {
         userDAO.buyGifts(userID,gifts);
     }
 
@@ -71,4 +72,6 @@ public class UserServiceImpl implements UserService{
     public Order getUserOrderById(int userID,int orderId) throws NoEntityException {
         return userDAO.getUserOrderById(userID,orderId);
     }
+
+
 }

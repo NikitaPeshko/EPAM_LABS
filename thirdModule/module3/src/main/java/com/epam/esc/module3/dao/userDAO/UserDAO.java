@@ -18,7 +18,6 @@ public interface UserDAO {
     void buyGift(int userID,int giftID);
     List<Order> getAllOrders(int id);
     Order getUserOrderById(int userID , int orderId) throws NoEntityException;
-    void buyGifts(int userID, List<Integer> gifts);
-
+    void buyGifts(int userID, List<Integer> gifts) throws NoEntityException;
 
 }

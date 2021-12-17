@@ -6,7 +6,6 @@ import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,10 +16,8 @@ import javax.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class UserDAOImpl implements UserDAO{
@@ -35,9 +32,7 @@ public class UserDAOImpl implements UserDAO{
         Query query=session.createQuery("From User ");
         query.setFirstResult(firstitem);
         query.setMaxResults(numberOfItemOnPage);
-
         List<User> users =  query.list();
-
         return users;
     }
 
@@ -48,8 +43,6 @@ public class UserDAOImpl implements UserDAO{
         if(user==null){
             throw new NoEntityException("no user by this id","404not");
         }
-
-
         return user;
     }
 
@@ -99,8 +92,6 @@ public class UserDAOImpl implements UserDAO{
         {
             session.update(userfromdb);
         }
-
-
     }
 
 
@@ -109,13 +100,10 @@ public class UserDAOImpl implements UserDAO{
     public void buyGift(int userID, int giftID) {
         Session session = entityManager.unwrap(Session.class);
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
-
         User user=new User();
         user.setUserId(userID);
-
         Gift gift=session.get(Gift.class,giftID);
         gift.setUser(user);
-
         List<Gift> list=new LinkedList<Gift>();
         list.add(gift);
         Order order=new Order();
@@ -126,19 +114,17 @@ public class UserDAOImpl implements UserDAO{
         session.save(order);
         System.out.println(order.getOrderId());
         gift.setOrder(order);
-     //   session.save();
-    //        Query query=session.createSQLQuery("insert into");
-        //session.createSQLQuery("select*from gift_certificate");
-
     }
 
 
 
     @Override
     @Transactional
-    public void buyGifts(int userID,List<Integer>giftsID) {
+    public void buyGifts(int userID,List<Integer>giftsID) throws NoEntityException {
         Session session = entityManager.unwrap(Session.class);
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
+
+
 
         User user=new User();
         user.setUserId(userID);
@@ -146,36 +132,31 @@ public class UserDAOImpl implements UserDAO{
 
         for (Integer giftID:giftsID){
             Gift gift=session.get(Gift.class,giftID);
+            Query query=session.createSQLQuery("select user_id from gift_certigicate where gift_id=:nameofgiftid");
+            int result= (int) query.setParameter("nameofgiftid",gift).uniqueResult();
+            if (result>0){
+                throw new NoEntityException("This certificate id="+giftID+" already buy by another user","ERRORCODE");
+            }
+
             gift.setUser(user);
+
             list.add(gift);
         }
-
-
         Order order=new Order();
         order.setDataOfOrder(timestamp);
-
         int amountOfAllOrder=0;
         for (Gift gift:list){
             amountOfAllOrder=amountOfAllOrder+gift.getPrice();
         }
-        System.out.println(amountOfAllOrder);
-
         order.setAmount(amountOfAllOrder);
         order.setGiftsinorder(list);
         order.setUserInOrder(user);
         session.save(order);
         System.out.println(order.getOrderId());
-
         for (Gift gift:list){
             gift.setOrder(order);
         }
-
-        //   session.save();
-        //        Query query=session.createSQLQuery("insert into");
-        //session.createSQLQuery("select*from gift_certificate");
-
     }
-
 
 
     @Override

@@ -3,7 +3,9 @@ package com.epam.esc.module3.dao.giftDAO;
 
 import com.epam.esc.module3.dao.giftDAO.GiftDAO;
 import com.epam.esc.module3.entity.Gift;
+import com.epam.esc.module3.entity.Order;
 import com.epam.esc.module3.entity.Tag;
+import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -14,10 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Repository
@@ -139,5 +138,35 @@ public class GiftDAOImpl implements GiftDAO {
         List<Gift> gifts=query.list();
 
         return gifts;
+    }
+
+    @Override
+    public Tag findMostPopularTag() {
+        Session session = entityManager.unwrap(Session.class);
+        final String sql="select userinorder_id from(select sum(amount) summa,userinorder_id from dbmodule3.orders group by userinorder_id order by summa desc limit 1) k";
+        int userId=(int)session.createSQLQuery(sql).uniqueResult();
+        User user=new User();
+        user.setUserId(userId);
+        Query query=session.createQuery("From Order where userInOrder=:userId");
+        query.setParameter("userId",user);
+        List<Order> orders=query.list();
+        List<Gift> gifts=new LinkedList<>();
+        for (Order order:orders){
+            for (Gift gift:order.getGiftsinorder()){
+                gifts.add(gift);
+
+            }
+
+        }
+        List<Tag> allTags=new LinkedList<>();
+        for (Gift gift:gifts){
+            for (Tag tag:gift.getListOfTag()){
+                allTags.add(tag);
+            }
+        }
+
+        System.out.println(allTags);
+
+        return null;
     }
 }

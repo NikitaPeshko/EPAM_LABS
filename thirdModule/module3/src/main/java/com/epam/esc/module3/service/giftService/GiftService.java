@@ -1,6 +1,7 @@
 package com.epam.esc.module3.service.giftService;
 
 import com.epam.esc.module3.entity.Gift;
+import com.epam.esc.module3.entity.Tag;
 import com.epam.esc.module3.exception.DAOException;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface GiftService {
     List<Gift> findGiftByTagName(String tagName);
     Gift changePriceOfGift(int id,int newPrice);
     List<Gift> findGiftBySeveralTags(List<String>tags);
+    Tag findMostPopulaarTag();
 }

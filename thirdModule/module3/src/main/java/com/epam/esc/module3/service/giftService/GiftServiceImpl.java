@@ -3,6 +3,7 @@ package com.epam.esc.module3.service.giftService;
 
 import com.epam.esc.module3.dao.giftDAO.GiftDAOImpl;
 import com.epam.esc.module3.entity.Gift;
+import com.epam.esc.module3.entity.Tag;
 import com.epam.esc.module3.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,10 @@ public class GiftServiceImpl implements GiftService {
     @Override
     public List<Gift> findGiftBySeveralTags(List<String> tags) {
         return giftDAO.findGiftBySeveralTags(tags);
+    }
+
+    @Override
+    public Tag findMostPopulaarTag() {
+        return giftDAO.findMostPopularTag();
     }
 }
