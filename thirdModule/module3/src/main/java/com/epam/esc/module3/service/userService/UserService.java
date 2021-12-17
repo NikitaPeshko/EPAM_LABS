@@ -18,6 +18,7 @@ public interface UserService {
     void buyGift(int userID,int giftID);
     List<Order> getAllUsersOrders(int id);
     Order getUserOrderById(int userID,int orderId) throws NoEntityException;
+    void buyGifts(int userID, List<Integer>gifts);
 
 
 

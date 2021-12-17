@@ -73,11 +73,16 @@ public class UserController {
         userService.updateUser(user,id);
     }
 
-    @PostMapping("/buygift/{userid}/{giftid}")
+    @PostMapping("/buygift2/{userid}/{giftid}")
     public void bueGift(@PathVariable("userid") int userId,@PathVariable("giftid")int giftId) {
         userService.buyGift(userId,giftId);
     }
 
+
+    @PostMapping("/buygift/{userid}")
+    public void bueGift(@PathVariable("userid") int userId,@RequestParam("gift")List<Integer>gifts) {
+        userService.buyGifts(userId,gifts);
+    }
     @GetMapping("/{id}/orders")
     public List<Order> getAllUsersOrder(@PathVariable("id")int id){
         return userService.getAllUsersOrders(id);

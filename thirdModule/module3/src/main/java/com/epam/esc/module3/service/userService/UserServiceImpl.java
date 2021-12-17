@@ -21,6 +21,11 @@ public class UserServiceImpl implements UserService{
         userDAO.buyGift(userID,giftID);
     }
 
+    @Override
+    public void buyGifts(int userID, List<Integer>gifts) {
+        userDAO.buyGifts(userID,gifts);
+    }
+
     @Autowired
     private UserDAOImpl userDAO;
 

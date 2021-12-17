@@ -132,6 +132,52 @@ public class UserDAOImpl implements UserDAO{
 
     }
 
+
+
+    @Override
+    @Transactional
+    public void buyGifts(int userID,List<Integer>giftsID) {
+        Session session = entityManager.unwrap(Session.class);
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
+
+        User user=new User();
+        user.setUserId(userID);
+        List<Gift> list=new LinkedList<Gift>();
+
+        for (Integer giftID:giftsID){
+            Gift gift=session.get(Gift.class,giftID);
+            gift.setUser(user);
+            list.add(gift);
+        }
+
+
+        Order order=new Order();
+        order.setDataOfOrder(timestamp);
+
+        int amountOfAllOrder=0;
+        for (Gift gift:list){
+            amountOfAllOrder=amountOfAllOrder+gift.getPrice();
+        }
+        System.out.println(amountOfAllOrder);
+
+        order.setAmount(amountOfAllOrder);
+        order.setGiftsinorder(list);
+        order.setUserInOrder(user);
+        session.save(order);
+        System.out.println(order.getOrderId());
+
+        for (Gift gift:list){
+            gift.setOrder(order);
+        }
+
+        //   session.save();
+        //        Query query=session.createSQLQuery("insert into");
+        //session.createSQLQuery("select*from gift_certificate");
+
+    }
+
+
+
     @Override
     public List<Order> getAllOrders(int id) {
         Session session = entityManager.unwrap(Session.class);
