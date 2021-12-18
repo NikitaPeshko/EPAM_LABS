@@ -36,7 +36,7 @@ class UserServiceImplTest {
     private Order order2;
     private Gift gift;
     private Gift gift2;
-    
+
 
     @BeforeEach
     void setUp() {

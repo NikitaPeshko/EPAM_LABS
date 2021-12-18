@@ -5,7 +5,6 @@ import com.epam.esc.module3.entity.Order;
 import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
-import com.epam.esc.module3.exception.Response;
 import com.epam.esc.module3.service.userService.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -13,7 +12,6 @@ import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -31,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping(produces = { "application/hal+json" })
-    public CollectionModel<User> getAllUsers(@RequestParam(name = "page",defaultValue = "1") int numberOfPage, @RequestParam(name = "content",defaultValue = "5") int numberOfItemOnPage){
+    public CollectionModel<User> getAllUsers(@RequestParam(name = "page",defaultValue = "1") int numberOfPage, @RequestParam(name = "content",defaultValue = "5") int numberOfItemOnPage) throws NoEntityException {
 
         List<User> allUsers=userService.getAllUsers(numberOfPage,numberOfItemOnPage);
         for (final User user : allUsers) {
@@ -85,9 +83,22 @@ public class UserController {
     public List<Gift> bueGift(@PathVariable("userid") int userId, @RequestParam("gift")List<Integer>gifts) throws NoEntityException {
         return userService.buyGifts(userId,gifts);
     }
-    @GetMapping("/{id}/orders")
-    public List<Order> getAllUsersOrder(@PathVariable("id")int id){
-        return userService.getAllUsersOrders(id);
+    @GetMapping(value = "/{id}/orders",produces = { "application/hal+json" })
+    public CollectionModel<Order> getAllUsersOrder(@PathVariable("id")int id) throws NoEntityException {
+
+        final List<Order> orders = userService.getAllUsersOrders(id);
+        for (final Order order : orders) {
+            final Link selfLink = linkTo(
+                    methodOn(UserController.class).getUserOrderById(id, order.getOrderId())).withSelfRel();
+            order.add(selfLink);
+        }
+
+        Link link = linkTo(methodOn(UserController.class).getAllUsersOrder(id)).withSelfRel();
+        CollectionModel<Order> result = CollectionModel.of(orders, link);
+        return result;
+
+
+//        return userService.getAllUsersOrders(id);
 
     }
     @GetMapping("/{userid}/orders/{idorder}")

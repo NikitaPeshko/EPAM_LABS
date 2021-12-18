@@ -1,15 +1,12 @@
 package com.epam.esc.module3.dao.giftDAO;
 
 
-import com.epam.esc.module3.dao.giftDAO.GiftDAO;
 import com.epam.esc.module3.entity.Gift;
 import com.epam.esc.module3.entity.Order;
 import com.epam.esc.module3.entity.Tag;
 import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.*;
-import java.util.stream.Stream;
+
 
 @Repository
 @Transactional
@@ -41,7 +38,6 @@ public class GiftDAOImpl implements GiftDAO {
     @Override
     public Gift addGift(Gift gift) throws DAOException {
         Session currentSession = entityManager.unwrap(Session.class);
-        //currentSession.saveOrUpdate(gift);
         currentSession.save(gift);
         return gift;
     }
@@ -56,7 +52,6 @@ public class GiftDAOImpl implements GiftDAO {
             System.out.println("Gift 1 is deleted");
             result=true;
         }
-
         return result;
     }
     @Override
@@ -65,7 +60,6 @@ public class GiftDAOImpl implements GiftDAO {
         Query query=session.createSQLQuery("select * from gift_certigicate where name like :partOfName").addEntity(Gift.class);
         query.setParameter("partOfName","%"+partOfName+"%");
         List<Gift> gifts =query.list();
-
         return gifts;
     }
 
@@ -89,16 +83,9 @@ public class GiftDAOImpl implements GiftDAO {
                 "on ft2.idgift = gift_certigicate.gift_id\n" +
                 "join tags t2 on t2.tag_id = ft2.idtag and t2.tag_name =:nameoftag \n" +
                 "group by gift_certigicate.gift_id";
-
-
         Query query=session.createSQLQuery(sql).addEntity(Gift.class);
         query.setString("nameoftag",tagName);
-    //    query.setParameter("nameoftag","'"+tagName+"'");
-
         List<Gift> gifts=query.list();
-
-
-
         return gifts;
     }
 
