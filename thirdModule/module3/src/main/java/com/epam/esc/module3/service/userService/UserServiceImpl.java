@@ -17,18 +17,25 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
+
+
+    private UserDAOImpl userDAO;
+
+    @Autowired
+    public UserServiceImpl(UserDAOImpl userDAO) {
+        this.userDAO = userDAO;
+    }
+
     @Override
     public void buyGift(int userID, int giftID) {
         userDAO.buyGift(userID,giftID);
     }
 
     @Override
-    public void buyGifts(int userID, List<Integer>gifts) throws NoEntityException {
-        userDAO.buyGifts(userID,gifts);
+    public List<Gift> buyGifts(int userID, List<Integer>gifts) throws NoEntityException {
+        return userDAO.buyGifts(userID,gifts);
     }
 
-    @Autowired
-    private UserDAOImpl userDAO;
 
     @Override
     @Transactional
@@ -57,9 +64,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void updateUser(User user,int id) {
+    public User updateUser(User user,int id) {
         user.setUserId(id);
-        userDAO.updateUser(user,id);
+        return userDAO.updateUser(user,id);
     }
 
 

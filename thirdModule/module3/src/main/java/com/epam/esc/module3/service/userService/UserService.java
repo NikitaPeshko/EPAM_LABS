@@ -15,11 +15,11 @@ public interface UserService {
     boolean deleteUserById(int id);
     User getUserById(int id) throws NoEntityException;
     List<User> getAllUsers(int numberOfPage,int numberOfItemOnPage);
-    void updateUser(User user,int id);
+    User updateUser(User user,int id);
     void buyGift(int userID,int giftID);
     List<Order> getAllUsersOrders(int id);
     Order getUserOrderById(int userID,int orderId) throws NoEntityException;
-    void buyGifts(int userID, List<Integer>gifts) throws NoEntityException;
+    List<Gift> buyGifts(int userID, List<Integer>gifts) throws NoEntityException;
 
 
 

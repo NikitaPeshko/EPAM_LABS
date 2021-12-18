@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDAOImpl implements UserDAO{
@@ -74,7 +75,7 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     @Transactional
-    public void updateUser(User user,int id) {
+    public User updateUser(User user,int id) {
         Session session = entityManager.unwrap(Session.class);
         User userfromdb=session.get(User.class,id);
         if(user.getName()==null){
@@ -92,6 +93,7 @@ public class UserDAOImpl implements UserDAO{
         {
             session.update(userfromdb);
         }
+        return userfromdb;
     }
 
 
@@ -120,9 +122,10 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     @Transactional
-    public void buyGifts(int userID,List<Integer>giftsID) throws NoEntityException {
+    public List<Gift> buyGifts(int userID, List<Integer>giftsID) throws NoEntityException {
         Session session = entityManager.unwrap(Session.class);
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
+
 
 
 
@@ -133,8 +136,8 @@ public class UserDAOImpl implements UserDAO{
         for (Integer giftID:giftsID){
             Gift gift=session.get(Gift.class,giftID);
             Query query=session.createSQLQuery("select user_id from gift_certigicate where gift_id=:nameofgiftid");
-            int result= (int) query.setParameter("nameofgiftid",gift).uniqueResult();
-            if (result>0){
+            Integer result= (Integer) query.setParameter("nameofgiftid",gift).uniqueResult();
+            if ((result!=null)&&(result>0)){
                 throw new NoEntityException("This certificate id="+giftID+" already buy by another user","ERRORCODE");
             }
 
@@ -156,6 +159,7 @@ public class UserDAOImpl implements UserDAO{
         for (Gift gift:list){
             gift.setOrder(order);
         }
+        return list;
     }
 
 
