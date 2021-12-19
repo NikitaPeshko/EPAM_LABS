@@ -13,8 +13,13 @@ import java.util.List;
 @Service
 public class GiftServiceImpl implements GiftService {
 
-    @Autowired
+
     private GiftDAOImpl giftDAO;
+
+    @Autowired
+    public GiftServiceImpl(GiftDAOImpl giftDAO) {
+        this.giftDAO = giftDAO;
+    }
 
     @Override
     public List<Gift> getAllGift() {

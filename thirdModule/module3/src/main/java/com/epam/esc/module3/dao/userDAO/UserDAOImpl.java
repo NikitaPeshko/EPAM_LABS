@@ -125,9 +125,6 @@ public class UserDAOImpl implements UserDAO{
         Session session = entityManager.unwrap(Session.class);
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
 
-
-
-
         User user=new User();
         user.setUserId(userID);
         List<Gift> list=new LinkedList<Gift>();
