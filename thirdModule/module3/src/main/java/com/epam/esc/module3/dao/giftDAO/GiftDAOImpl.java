@@ -6,6 +6,7 @@ import com.epam.esc.module3.entity.Order;
 import com.epam.esc.module3.entity.Tag;
 import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
+import com.epam.esc.module3.exception.NoEntityException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,16 +56,19 @@ public class GiftDAOImpl implements GiftDAO {
         return result;
     }
     @Override
-    public List<Gift> findGiftByPatName(String partOfName) {
+    public List<Gift> findGiftByPatName(String partOfName) throws NoEntityException {
         Session session = entityManager.unwrap(Session.class);
         Query query=session.createSQLQuery("select * from gift_certigicate where name like :partOfName").addEntity(Gift.class);
         query.setParameter("partOfName","%"+partOfName+"%");
         List<Gift> gifts =query.list();
+        if(gifts.isEmpty()){
+            throw new NoEntityException("No gift by this name="+partOfName,"ERORRCODE");
+        }
         return gifts;
     }
 
     @Override
-    public List<Gift> findByTagName(String tagName) {
+    public List<Gift> findByTagName(String tagName) throws NoEntityException {
         Session session = entityManager.unwrap(Session.class);
         List<String> tagsInList= List.of(tagName.split(","));
         System.out.println(tagsInList);
@@ -86,6 +90,9 @@ public class GiftDAOImpl implements GiftDAO {
         Query query=session.createSQLQuery(sql).addEntity(Gift.class);
         query.setString("nameoftag",tagName);
         List<Gift> gifts=query.list();
+        if (gifts.isEmpty()){
+            throw new NoEntityException("No gifts with enter tags","ERRORCODE");
+        }
         return gifts;
     }
 
@@ -102,7 +109,7 @@ public class GiftDAOImpl implements GiftDAO {
     }
 
     @Override
-    public List<Gift> findGiftBySeveralTags(List<String> tags) {
+    public List<Gift> findGiftBySeveralTags(List<String> tags) throws NoEntityException {
         Session session = entityManager.unwrap(Session.class);
         String sql="select gift_certigicate.*, group_concat(t1.tag_name)as tags \n" +
                 "from gift_certigicate join gift_tag ft1 \n" +
@@ -121,6 +128,10 @@ public class GiftDAOImpl implements GiftDAO {
 
         Query query=session.createSQLQuery(sql).addEntity(Gift.class);
         List<Gift> gifts=query.list();
+        if (gifts.isEmpty()){
+            throw new NoEntityException("No gifts with this tags","ERRORCODE");
+
+        }
 
         return gifts;
     }

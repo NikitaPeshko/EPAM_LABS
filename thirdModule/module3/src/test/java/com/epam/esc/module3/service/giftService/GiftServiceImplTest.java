@@ -6,6 +6,7 @@ import com.epam.esc.module3.entity.Gift;
 import com.epam.esc.module3.entity.Tag;
 import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.DAOException;
+import com.epam.esc.module3.exception.NoEntityException;
 import com.epam.esc.module3.service.userService.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -120,7 +121,7 @@ class GiftServiceImplTest {
     }
 
     @Test
-    void findByName() {
+    void findByName() throws NoEntityException {
         List<Gift>giftFinabyName=new LinkedList<>();
         giftFinabyName.add(gift1);
         when(giftDAOMock.findGiftByPatName("trav")).thenReturn(giftFinabyName);
@@ -145,7 +146,7 @@ class GiftServiceImplTest {
     }
 
     @Test
-    void findGiftBySeveralTags() {
+    void findGiftBySeveralTags() throws NoEntityException {
         List<String> tagsName = tags1.stream().map(tag -> tag.getTagName()).collect(Collectors.toList());
         List<Gift>giftWithNeedTags=new LinkedList<>();
         giftWithNeedTags.add(gift1);
