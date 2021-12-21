@@ -84,10 +84,10 @@ class UserDAOImplTest {
 
     @Test
     void deleteUser() throws DAOException, NoEntityException {
-        User user =new User();
-        user.setEmail("nikita@gmail.ru");
-        user.setName("Nikita");
-        repository.addUser(user);
+        User user22 =new User();
+        user22.setEmail("nikita@gmail.ru");
+        user22.setName("Nikita");
+        repository.addUser(user22);
         User userFromDb=repository.getUserById(1);
         assertThat(userFromDb.getEmail()).isEqualTo("nikita@gmail.ru");
         boolean result=repository.deleteUser(1);

@@ -16,6 +16,6 @@ public interface GiftDAO {
     List<Gift> findByTagName(String tagName) throws NoEntityException;
     Gift changePriceOfGift(int id,int newPrice);
     List<Gift> findGiftBySeveralTags(List<String> tags) throws NoEntityException;
-    Tag findMostPopularTag();
+    Tag findMostPopularTag() throws NoEntityException;
 
 }

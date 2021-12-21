@@ -137,7 +137,7 @@ public class GiftDAOImpl implements GiftDAO {
     }
 
     @Override
-    public Tag findMostPopularTag() {
+    public Tag findMostPopularTag() throws NoEntityException {
         Session session = entityManager.unwrap(Session.class);
         final String sql="select userinorder_id from(select sum(amount) summa,userinorder_id from dbmodule3.orders group by userinorder_id order by summa desc limit 1) k";
         int userId=(int)session.createSQLQuery(sql).uniqueResult();
@@ -168,6 +168,11 @@ public class GiftDAOImpl implements GiftDAO {
             }
         }
         String nameOfmostPopularTag="";
+        if (tagsAndNubmers.isEmpty()){
+            throw new NoEntityException("No anyone tag in this order","ERROR");
+
+        }
+
         int maxValue=Collections.max(tagsAndNubmers.values());
 
         for (Map.Entry<String, Integer> entry : tagsAndNubmers.entrySet()){
@@ -176,9 +181,15 @@ public class GiftDAOImpl implements GiftDAO {
             }
 
         }
+        if (nameOfmostPopularTag==null){
+            throw new NoEntityException("No anyone tag in this order","ERROR");
+        }
         Query query1=session.createQuery("From Tag where tagName=:nameofmostpopulartag");
         query1.setParameter("nameofmostpopulartag",nameOfmostPopularTag);
         List<Tag> mostPopulatTag=  query1.list();
+        if (mostPopulatTag==null){
+            throw new NoEntityException("No anyone tag in this order","ERROR");
+        }
         return mostPopulatTag.get(0);
     }
 }
