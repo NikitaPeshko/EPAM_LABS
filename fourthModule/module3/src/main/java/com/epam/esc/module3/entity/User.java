@@ -11,8 +11,14 @@ import java.util.Objects;
 @Table(name = "users")
 public class User extends RepresentationModel<User> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int userId;
+
+    @Column
+    private String login;
+    @Column
+    private String password;
+
     @Column
     private String name;
     @Column
@@ -31,13 +37,45 @@ public class User extends RepresentationModel<User> {
     public User() {
     }
 
+    @ManyToOne
+    @JoinColumn(name = "roleId")
+    private Role role;
 
-    public User(int userId, String name, String email, List<Gift> gifts, List<Order> orders) {
+
+
+    public User(int userId, String login, String password, String name, String email, List<Gift> gifts, List<Order> orders, Role role) {
         this.userId = userId;
+        this.login = login;
+        this.password = password;
         this.name = name;
         this.email = email;
         this.gifts = gifts;
         this.orders = orders;
+        this.role = role;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public List<Order> getOrders() {
