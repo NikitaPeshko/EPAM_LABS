@@ -2,6 +2,7 @@ package com.epam.esc.module3.service.userService;
 
 import com.epam.esc.module3.entity.Role;
 import com.epam.esc.module3.entity.User;
+import com.epam.esc.module3.exception.NoEntityException;
 import com.epam.esc.module3.repository.RoleRepository;
 import com.epam.esc.module3.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,21 @@ public class UserService1 {
         return userRepository.save(userEntity);
     }
 
+    public boolean checkIfLoginNotExist(String login) {
+        return userRepository.existsByLogin(login);
+    }
+
     public User findByLogin(String login) {
         return userRepository.findByLogin(login);
     }
 
-    public User findByLoginAndPassword(String login, String password) {
+    public User findByLoginAndPassword(String login, String password) throws NoEntityException {
         User userEntity = findByLogin(login);
         if (userEntity != null) {
             if (passwordEncoder.matches(password, userEntity.getPassword())) {
                 return userEntity;
+            }else {
+                throw new NoEntityException("Incorrect login or password","ERROR");
             }
         }
         return null;

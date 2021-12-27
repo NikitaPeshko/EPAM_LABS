@@ -5,8 +5,11 @@ import com.epam.esc.module3.entity.Gift;
 import com.epam.esc.module3.entity.Tag;
 import com.epam.esc.module3.exception.DAOException;
 import com.epam.esc.module3.exception.NoEntityException;
+import com.epam.esc.module3.service.giftService.GiftService2;
 import com.epam.esc.module3.service.giftService.GiftServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +21,13 @@ public class GiftCertificateController {
     @Autowired
     private GiftServiceImpl giftService;
 
+    @Autowired
+    private GiftService2 giftService2;
+
     @GetMapping()
-    public List<Gift> get(){
-        return giftService.getAllGift();
+    public List<Gift> getAll(@RequestParam(name = "page",defaultValue = "1") int numberOfPage, @RequestParam(name = "content",defaultValue = "5") int numberOfItemOnPage){
+        Pageable page = PageRequest.of(numberOfPage-1,numberOfItemOnPage);
+        return giftService2.getAllGift(page);
     }
 
     @GetMapping("/{id}")
