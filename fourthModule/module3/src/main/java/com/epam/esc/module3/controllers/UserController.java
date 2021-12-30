@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping(produces = { "application/hal+json" })
     public CollectionModel<UserDTO> getAllUsers(@RequestParam(name = "page",defaultValue = "1") int numberOfPage,
-                                                @RequestParam(name = "content",defaultValue = "5") int numberOfItemOnPage) throws NoEntityException {
+                                                @RequestParam(name = "content",defaultValue = "5") int numberOfItemOnPage) throws NoEntityException, ServiceException {
 
         List<UserDTO> allUsers=userService2.getAllUsers(numberOfPage,numberOfItemOnPage);
         for (final UserDTO user : allUsers) {
@@ -40,11 +40,11 @@ public class UserController {
             Link selfLink = linkTo(UserController.class).slash(userId)
                     .withSelfRel();
             user.add(selfLink);
-//            if (userService.getAllUsersOrders(userId).size() > 0) {
-//                final Link ordersLink = linkTo(methodOn(UserController.class).getAllUsersOrder(userId))
-//                        .withRel("allOrders");
-//                user.add(ordersLink);
-//            }
+            if (userService2.getAllOrder(userId).size() > 0) {
+                final Link ordersLink = linkTo(methodOn(UserController.class).getAllUsersOrder(userId))
+                        .withRel("allOrders");
+                user.add(ordersLink);
+            }
         }
 
         Link link = linkTo(AdminController.class).withSelfRel();
