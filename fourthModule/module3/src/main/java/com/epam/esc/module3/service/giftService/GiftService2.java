@@ -9,8 +9,6 @@ import com.epam.esc.module3.exception.ServiceException;
 import com.epam.esc.module3.repository.GiftRepository;
 import com.epam.esc.module3.repository.OrderRepository;
 import com.epam.esc.module3.repository.TagRepository;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

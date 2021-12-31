@@ -29,10 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/*").hasRole("ADMIN")
-             //   .antMatchers(HttpMethod.PUT,"/users/*").hasRole("ADMIN")
-                .antMatchers("/user/*").hasRole("USER")
-                .antMatchers("/register", "/auth").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/gifts/*","/users/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/gifts/*","/users/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/users","/users/*").hasRole("USER")
+                .antMatchers(HttpMethod.POST,"/users/buygift/*").hasAnyRole("USER","ADMIN")
+
+                .antMatchers(HttpMethod.GET,"/gifts","/gifts/*","/register", "/auth").permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
