@@ -139,7 +139,7 @@ public class GiftDAOImpl implements GiftDAO {
     @Override
     public Tag findMostPopularTag() throws NoEntityException {
         Session session = entityManager.unwrap(Session.class);
-        final String sql="select userinorder_id from(select sum(amount) summa,userinorder_id from dbmodule3.orders group by userinorder_id order by summa desc limit 1) k";
+        final String sql="select userinorder_id from(select sum(amount) summa,userinorder_id from dbmodule4.orders group by userinorder_id order by summa desc limit 1)";
         int userId=(int)session.createSQLQuery(sql).uniqueResult();
         User user=new User();
         user.setUserId(userId);

@@ -75,13 +75,13 @@ public class GiftCertificateController {
     @GetMapping("/findbyseveraltags")
     public List<Gift> findGiftsBySeveralTags(@RequestParam("tag")List<String>tags) throws NoEntityException {
         System.out.println(tags);
-        return giftService.findGiftBySeveralTags(tags);
+        return giftService2.findGiftBySeveralTags(tags);
 
     }
 
     @GetMapping("/mostpopulartag")
     public Tag findGiftsBySeveralTags() throws NoEntityException {
-        return giftService.findMostPopulaarTag();
+        return giftService2.findMostPopularTag();
     }
 
 
