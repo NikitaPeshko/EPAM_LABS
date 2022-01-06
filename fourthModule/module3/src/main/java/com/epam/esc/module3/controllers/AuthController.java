@@ -5,6 +5,9 @@ import com.epam.esc.module3.entity.User;
 import com.epam.esc.module3.exception.NoEntityException;
 import com.epam.esc.module3.service.userService.UserService1;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +27,7 @@ public class AuthController {
         u.setLogin(registrationRequest.getLogin());
         u.setEmail(registrationRequest.getEmail());
         u.setName(registrationRequest.getName());
+        u.setNotLocked(true);
         if(!userService.checkIfLoginNotExist(registrationRequest.getLogin())){
             userService.saveUser(u);
         }else {
@@ -35,6 +39,9 @@ public class AuthController {
     @PostMapping("/auth")
     public AuthResponse auth(@RequestBody AuthRequest request) throws NoEntityException {
         User userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
+        if(!userEntity.isNotLocked()){
+            throw  new NoEntityException("Your accaunt is locked","ERROR");
+        }
         String token = jwtProvider.generateToken(userEntity.getLogin());
         return new AuthResponse(token);
     }

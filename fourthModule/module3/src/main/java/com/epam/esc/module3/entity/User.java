@@ -24,14 +24,17 @@ public class User extends RepresentationModel<User> {
     @Column
     private String email;
 
+    @Column
+    private boolean notLocked;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     private List<Gift> gifts;
 
 
 
 ///////////////////////////////////////////////
-    @OneToMany(mappedBy = "userInOrder",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userInOrder",cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     private List<Order> orders;
 
     public User() {
@@ -52,6 +55,26 @@ public class User extends RepresentationModel<User> {
         this.gifts = gifts;
         this.orders = orders;
         this.role = role;
+    }
+
+    public User(int userId, String login, String password, String name, String email, boolean notLocked, List<Gift> gifts, List<Order> orders, Role role) {
+        this.userId = userId;
+        this.login = login;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.notLocked = notLocked;
+        this.gifts = gifts;
+        this.orders = orders;
+        this.role = role;
+    }
+
+    public boolean isNotLocked() {
+        return notLocked;
+    }
+
+    public void setNotLocked(boolean notLocked) {
+        this.notLocked = notLocked;
     }
 
     public String getLogin() {

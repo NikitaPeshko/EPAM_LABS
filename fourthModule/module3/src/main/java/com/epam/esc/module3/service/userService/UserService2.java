@@ -81,11 +81,14 @@ public class UserService2 {
 
     public boolean deleteUser(int id) throws ServiceException {
         if(userRepository.existsById(id)){
-            userRepository.deleteById(id);
+            User deletedUser=userRepository.getOne(id);
+            deletedUser.setNotLocked(false);
+            userRepository.save(deletedUser);
+           // userRepository.deleteById(id);
         }else {
             throw new ServiceException("User by this id not exist","ERRORCODE");
         }
-        return !userRepository.existsById(id);
+        return !userRepository.findAccauntStatusByUserId(id);
     }
 
     public List<Order> getAllOrder(int id) throws ServiceException {
